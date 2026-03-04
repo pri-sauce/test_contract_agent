@@ -473,6 +473,27 @@ class ReportExporter:
             f"**Recommendation:** {report.recommendation}",
             "",
         ]
+        
+        # Add timing information if available
+        timing = m.get('timing', {})
+        if timing:
+            total_time = timing.get('total_seconds', 0)
+            review_time = timing.get('review_seconds', 0)
+            avg_time = timing.get('avg_seconds_per_clause', 0)
+            
+            lines += [
+                "## Performance Metrics", "",
+                "| Metric | Time |",
+                "|--------|------|",
+                f"| Total Processing Time | {total_time:.2f}s |",
+                f"| Document Parsing | {timing.get('parse_seconds', 0):.2f}s |",
+                f"| Clause Segmentation | {timing.get('segment_seconds', 0):.2f}s |",
+                f"| Metadata Extraction | {timing.get('metadata_seconds', 0):.2f}s |",
+                f"| Clause Review | {review_time:.2f}s |",
+                f"| Executive Summary | {timing.get('summary_seconds', 0):.2f}s |",
+                f"| Average per Clause | {avg_time:.2f}s |",
+                "",
+            ]
 
         # Contract Details
         lines += [

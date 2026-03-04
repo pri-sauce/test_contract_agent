@@ -663,35 +663,49 @@ class ReviewPipeline:
         Full pipeline: file path → complete review report.
         This is the main entry point.
         """
+        import time
+        
+        # Start timing
+        start_time = time.time()
+        
         path = Path(file_path)
         console.print(f"\n[bold cyan]📄 Contract Review Agent[/bold cyan]")
         console.print(f"[dim]File: {path.name}[/dim]\n")
 
         # Step 1: Parse document
+        step_start = time.time()
         with console.status("[bold]Parsing document...[/bold]"):
             doc = parser.parse(path)
-            console.print(f"[green]✓[/green] Parsed: {doc.word_count} words, {len(doc.pages)} pages")
+            parse_time = time.time() - step_start
+            console.print(f"[green]✓[/green] Parsed: {doc.word_count} words, {len(doc.pages)} pages [dim]({parse_time:.2f}s)[/dim]")
 
         # Step 2: Segment into clauses
+        step_start = time.time()
         with console.status("[bold]Segmenting clauses...[/bold]"):
             clauses = segmenter.segment(doc)
             summary = segmenter.get_clause_summary(clauses)
-            console.print(f"[green]✓[/green] Found {summary['total_clauses']} clauses")
+            segment_time = time.time() - step_start
+            console.print(f"[green]✓[/green] Found {summary['total_clauses']} clauses [dim]({segment_time:.2f}s)[/dim]")
 
         # Step 3: Extract metadata
+        step_start = time.time()
         with console.status("[bold]Extracting contract metadata...[/bold]"):
             metadata = self._extract_metadata(doc)
+            metadata_time = time.time() - step_start
             console.print(f"[green]✓[/green] Metadata: {metadata.get('contract_type', 'Unknown')} | "
-                         f"Parties: {', '.join(metadata.get('parties', ['Unknown']))}")
+                         f"Parties: {', '.join(metadata.get('parties', ['Unknown']))} [dim]({metadata_time:.2f}s)[/dim]")
 
         # Step 4: Review each clause
         console.print(f"\n[bold]Reviewing {len(clauses)} clauses...[/bold]")
+        step_start = time.time()
         clause_reviews = self._review_all_clauses(clauses)
+        review_time = time.time() - step_start
 
         # Step 4.5: Resolve contradictions — same clause type cannot be HIGH and LOW
         clause_reviews = self._resolve_contradictions(clause_reviews)
 
         # Step 5: Generate executive summary
+        step_start = time.time()
         with console.status("[bold]Generating executive summary...[/bold]"):
             reviews_as_dicts = [
                 {
@@ -702,19 +716,35 @@ class ReviewPipeline:
                 for r in clause_reviews
             ]
             exec_summary = self._generate_summary(reviews_as_dicts, metadata)
+            summary_time = time.time() - step_start
 
-        # Step 6: Assemble report
+        # Calculate total time
+        total_time = time.time() - start_time
+
+        # Step 6: Assemble report with timing data
         report = self._assemble_report(
             filename=path.name,
             metadata=metadata,
             clause_reviews=clause_reviews,
             executive_summary=exec_summary,
         )
+        
+        # Add timing information to report
+        report.metadata['timing'] = {
+            'total_seconds': round(total_time, 2),
+            'parse_seconds': round(parse_time, 2),
+            'segment_seconds': round(segment_time, 2),
+            'metadata_seconds': round(metadata_time, 2),
+            'review_seconds': round(review_time, 2),
+            'summary_seconds': round(summary_time, 2),
+            'avg_seconds_per_clause': round(review_time / len(clauses), 2) if clauses else 0,
+        }
 
         color = 'red' if report.overall_risk == 'HIGH' else 'yellow' if report.overall_risk == 'MEDIUM' else 'green'
         console.print(f"\n[bold green]Review Complete[/bold green]")
         console.print(f"Overall Risk: [{color}]{report.overall_risk}[/{color}]")
         console.print(f"High: {report.high_risk_count} | Medium: {report.medium_risk_count} | Low: {report.low_risk_count} | Acceptable: {report.acceptable_count}")
+        console.print(f"\n[dim]⏱️  Total time: {total_time:.2f}s | Review: {review_time:.2f}s | Avg per clause: {review_time/len(clauses):.2f}s[/dim]")
 
         return report
 

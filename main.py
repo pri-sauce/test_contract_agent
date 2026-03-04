@@ -65,7 +65,7 @@ INDEX_PATH  = PROJECT_ROOT / "data" / "review_index.json"
 def rv(
     file: Path = typer.Argument(..., help="Contract file to review (PDF, DOCX, or TXT)"),
     output: Path = typer.Option(None, "--output", "-o", help="Output directory (default: data/reviews/)"),
-    format: str = typer.Option("markdown", "--format", "-f", help="Output format: markdown | json | both"),
+    format: str = typer.Option("markdown", "--format", "-f", help="Output format: markdown | json | pdf | both | all"),
     store: bool = typer.Option(True, "--store/--no-store", help="Store clauses in RAG DB for future reviews"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Print full clause details to terminal"),
 ):
@@ -75,7 +75,8 @@ def rv(
     \b
     Examples:
       python main.py rv vendor_nda.pdf
-      python main.py rv contract.docx --format both --verbose
+      python main.py rv contract.docx --format pdf
+      python main.py rv contract.docx --format all (markdown + json + pdf)
       python main.py rv agreement.txt -o ./my_reports --no-store
     """
     if not file.exists():
@@ -215,14 +216,36 @@ def _run_review(file: Path, output_dir=None, fmt="markdown", store_in_rag=True, 
     base_name = f"{stem}_{timestamp}"
 
     saved = []
+    
+    # Always generate markdown first (needed for PDF)
     md_path = out_dir / f"{base_name}.md"
     exporter.export_markdown(report, md_path)
-    saved.append(md_path)
+    
+    if fmt in ("markdown", "both", "all"):
+        saved.append(md_path)
 
-    if fmt in ("json", "both"):
+    if fmt in ("json", "both", "all"):
         json_path = out_dir / f"{base_name}.json"
         exporter.export_json(report, json_path)
         saved.append(json_path)
+    
+    # Generate PDF if requested
+    if fmt in ("pdf", "all"):
+        try:
+            from utils.pdf_generator import pdf_generator, WEASYPRINT_AVAILABLE
+            
+            if not WEASYPRINT_AVAILABLE:
+                console.print("\n[yellow]⚠ PDF generation unavailable[/yellow]")
+                console.print("[dim]Install with: pip install weasyprint markdown[/dim]")
+            else:
+                with console.status("[bold]Generating PDF...[/bold]"):
+                    pdf_path = out_dir / f"{base_name}.pdf"
+                    pdf_generator.markdown_to_pdf(md_path, pdf_path)
+                    saved.append(pdf_path)
+                    console.print(f"[green]✓[/green] PDF generated")
+        except Exception as e:
+            console.print(f"[yellow]⚠ PDF generation failed: {e}[/yellow]")
+            logger.error(f"PDF generation error: {e}")
 
     # Always write JSON to REVIEWS_DIR for list/show commands
     index_json = REVIEWS_DIR / f"{base_name}.json"
@@ -600,7 +623,90 @@ def new_overview(
     console.print(f"     [cyan]python main.py df {out_path.name}[/cyan]")
 
 # ==================================================================
-# Knowledge Base Commands
+# PDF CONVERSION COMMANDS
+# ==================================================================
+
+@app.command()
+def pdf(
+    file: Path = typer.Argument(..., help="Markdown file to convert to PDF"),
+    output: Path = typer.Option(None, "--output", "-o", help="Output PDF path (default: same name with .pdf)"),
+):
+    """
+    Convert a markdown review report to professional PDF.
+
+    \b
+    Examples:
+      python main.py pdf data/reviews/contract_2026-03-04.md
+      python main.py pdf report.md -o custom_report.pdf
+    """
+    try:
+        from utils.pdf_generator import pdf_generator, WEASYPRINT_AVAILABLE
+        
+        if not WEASYPRINT_AVAILABLE:
+            console.print("[red]PDF generation unavailable[/red]")
+            console.print("Install required packages:")
+            console.print("  [cyan]pip install weasyprint markdown[/cyan]")
+            raise typer.Exit(1)
+        
+        if not file.exists():
+            console.print(f"[red]File not found:[/red] {file}")
+            raise typer.Exit(1)
+        
+        console.print(f"\n[bold cyan]Converting to PDF...[/bold cyan]")
+        console.print(f"[dim]Source: {file.name}[/dim]\n")
+        
+        pdf_path = pdf_generator.markdown_to_pdf(file, output)
+        
+        console.print(f"\n[bold green]✓ PDF generated successfully![/bold green]")
+        console.print(f"[cyan]{pdf_path}[/cyan]")
+        
+    except Exception as e:
+        console.print(f"[red]✗ PDF generation failed:[/red] {e}")
+        raise typer.Exit(1)
+
+
+@app.command()
+def pdf_batch(
+    directory: Path = typer.Argument(..., help="Directory containing markdown files"),
+    output: Path = typer.Option(None, "--output", "-o", help="Output directory (default: same as input)"),
+):
+    """
+    Convert all markdown files in a directory to PDFs.
+
+    \b
+    Examples:
+      python main.py pdf-batch data/reviews/
+      python main.py pdf-batch data/reviews/ -o data/pdfs/
+    """
+    try:
+        from utils.pdf_generator import pdf_generator, WEASYPRINT_AVAILABLE
+        
+        if not WEASYPRINT_AVAILABLE:
+            console.print("[red]PDF generation unavailable[/red]")
+            console.print("Install required packages:")
+            console.print("  [cyan]pip install weasyprint markdown[/cyan]")
+            raise typer.Exit(1)
+        
+        if not directory.exists():
+            console.print(f"[red]Directory not found:[/red] {directory}")
+            raise typer.Exit(1)
+        
+        console.print(f"\n[bold cyan]Batch PDF Conversion[/bold cyan]")
+        console.print(f"[dim]Source: {directory}[/dim]\n")
+        
+        pdf_paths = pdf_generator.batch_convert(directory, output)
+        
+        console.print(f"\n[bold green]✓ Converted {len(pdf_paths)} files![/bold green]")
+        for pdf_path in pdf_paths:
+            console.print(f"  [cyan]{pdf_path.name}[/cyan]")
+        
+    except Exception as e:
+        console.print(f"[red]✗ Batch conversion failed:[/red] {e}")
+        raise typer.Exit(1)
+
+
+# ==================================================================
+# KNOWLEDGE BASE COMMANDS
 # ==================================================================
 
 @app.command()
