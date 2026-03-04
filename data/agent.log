@@ -1,0 +1,483 @@
+2026-02-26 11:25:24.380 | INFO     | core.llm:check_connection:34 - Ollama connected. Available models: ['nomic-embed-text:latest', 'llama3.2:3b', 'mistral:7b', 'qwen2.5-coder:0.5b', 'qwen2.5-coder:14b']
+2026-02-26 11:25:24.380 | SUCCESS  | core.llm:check_connection:44 - All required models available.
+2026-02-26 11:25:24.383 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-26 14:33:02.911 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-02-26 14:33:02.924 | INFO     | ingestion.segmenter:segment:107 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-02-26 14:33:02.925 | SUCCESS  | ingestion.segmenter:segment:124 - Segmented into 12 clauses
+2026-02-26 14:33:02.927 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-26 14:34:30.567 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:35:20.596 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:36:13.262 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:37:43.061 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:39:53.005 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:41:31.945 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:43:03.233 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:43:37.590 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:44:21.037 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:45:00.636 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:45:47.649 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:46:32.688 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-26 14:46:50.221 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-02-27 12:26:24.636 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-02-27 12:26:24.641 | INFO     | ingestion.segmenter:segment:107 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-02-27 12:26:24.642 | SUCCESS  | ingestion.segmenter:segment:124 - Segmented into 12 clauses
+2026-02-27 12:26:24.644 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-27 12:27:56.454 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:28:53.128 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:29:31.071 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:30:11.172 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:31:01.898 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:31:47.326 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:32:51.890 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:33:47.243 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:34:37.446 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:35:20.220 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:36:09.515 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:36:53.348 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 12:37:09.560 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-02-27 12:38:38.100 | INFO     | utils.report_exporter:export_markdown:123 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\processed\sample_nda_review.md
+2026-02-27 20:38:51.177 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-27 20:38:51.183 | WARNING  | rag.knowledge_base:load_playbook:92 - Playbook not found at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\playbook.yaml
+2026-02-27 20:39:40.930 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-27 20:39:50.933 | SUCCESS  | rag.knowledge_base:load_playbook:126 - Loaded 8 playbook entries into knowledge base
+2026-02-27 20:40:46.343 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-27 20:41:06.966 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-27 20:41:06.978 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-02-27 20:41:06.987 | INFO     | ingestion.segmenter:segment:107 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-02-27 20:41:06.988 | SUCCESS  | ingestion.segmenter:segment:124 - Segmented into 12 clauses
+2026-02-27 20:41:06.994 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-27 20:47:36.588 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-27 20:47:36.598 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-02-27 20:47:36.605 | INFO     | ingestion.segmenter:segment:107 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-02-27 20:47:36.606 | SUCCESS  | ingestion.segmenter:segment:124 - Segmented into 12 clauses
+2026-02-27 20:47:36.609 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-27 20:47:53.055 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:47:53.059 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:48:47.880 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:48:47.882 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:49:29.997 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:49:29.998 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:50:07.734 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:50:07.736 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:51:13.948 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:51:13.949 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:52:02.314 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:52:02.316 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:53:09.427 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:53:09.434 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:54:35.012 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:54:35.054 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:56:10.148 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:56:10.189 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:57:41.906 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:57:41.912 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 20:59:22.641 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 20:59:22.647 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 21:01:04.486 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-27 21:01:04.489 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-27 21:01:42.559 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-02-27 21:05:06.519 | INFO     | utils.report_exporter:export_markdown:123 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\processed\sample_nda_review.md
+2026-02-28 13:19:14.350 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-28 13:19:14.384 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-02-28 13:19:14.390 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-02-28 13:19:14.391 | SUCCESS  | ingestion.segmenter:segment:139 - Segmented into 12 clauses
+2026-02-28 13:19:14.392 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-28 13:22:27.130 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:22:27.143 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:26:44.299 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:26:44.308 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:29:19.417 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:29:19.423 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:31:53.029 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:31:53.036 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:33:03.175 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:33:03.177 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:34:03.885 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:34:03.887 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:35:12.861 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:35:12.863 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:36:07.681 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:36:07.685 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:37:20.252 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:37:20.254 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:40:33.198 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:40:33.218 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:43:25.152 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:43:25.160 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:45:00.716 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 13:45:00.719 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 13:46:32.375 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-02-28 13:48:15.411 | INFO     | utils.report_exporter:export_markdown:123 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\processed\sample_nda_review.md
+2026-02-28 16:43:29.470 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-28 16:43:29.479 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-02-28 16:43:29.491 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-02-28 16:43:29.491 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 11 clauses
+2026-02-28 16:43:29.491 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-28 16:45:33.308 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 16:45:33.308 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 16:46:42.444 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 16:46:42.444 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 16:47:34.908 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 16:47:34.908 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 16:48:37.181 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 16:48:37.181 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 16:50:08.411 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: 'OllamaEmbeddingFunction' object has no attribute 'embed_query' in query.
+2026-02-28 16:50:08.414 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 16:53:13.294 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-28 16:53:13.294 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-02-28 16:53:13.294 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-02-28 16:53:13.306 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 11 clauses
+2026-02-28 16:53:13.306 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-28 16:54:36.494 | ERROR    | rag.knowledge_base:_embed:319 - Embedding failed: 1 validation error for EmbeddingsRequest
+prompt
+  Input should be a valid string [type=string_type, input_value=['This Mutual Non-Disclos...orporation ("Vendor").'], input_type=list]
+    For further information visit https://errors.pydantic.dev/2.10/v/string_type
+2026-02-28 16:54:36.621 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 16:54:36.632 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 16:57:43.419 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-02-28 16:57:43.425 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-02-28 16:57:43.425 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-02-28 16:57:43.425 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 11 clauses
+2026-02-28 16:57:43.435 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-02-28 16:58:49.835 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 16:58:49.837 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:00:06.935 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:00:06.935 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:00:51.172 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:00:51.172 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:01:40.596 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:01:40.596 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:02:19.598 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:02:19.600 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:03:20.190 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:03:20.191 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:04:29.856 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:04:29.856 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:05:18.300 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:05:18.300 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:06:14.550 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:06:14.550 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:07:22.681 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:07:22.682 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:08:32.903 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-02-28 17:08:32.903 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-02-28 17:09:45.629 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-02-28 17:11:13.926 | INFO     | utils.report_exporter:export_markdown:123 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\processed\sample_nda_review.md
+2026-03-02 12:01:24.890 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-02 12:01:24.901 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-03-02 12:01:24.915 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-03-02 12:01:24.917 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 11 clauses
+2026-03-02 12:01:24.921 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-02 12:03:49.789 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:03:49.792 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:05:16.406 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:05:16.407 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:06:07.312 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:06:07.313 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:07:03.774 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:07:03.776 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:08:25.764 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:08:25.766 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:09:29.430 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:09:29.431 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:10:47.118 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:10:47.119 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:11:48.306 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:11:48.308 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:12:51.117 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:12:51.126 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:13:47.529 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:13:47.531 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:14:50.539 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 12:14:50.541 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 12:16:12.931 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-02 12:17:18.565 | INFO     | utils.report_exporter:export_markdown:123 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\processed\sample_nda_review.md
+2026-03-02 13:55:32.558 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-02 13:55:32.572 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-03-02 13:55:32.574 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-03-02 13:55:32.576 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 11 clauses
+2026-03-02 13:55:32.577 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-02 13:56:46.443 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 13:56:46.446 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 13:58:15.058 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 13:58:15.060 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 13:58:55.265 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 13:58:55.267 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 13:59:47.752 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 13:59:47.753 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:00:26.135 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 14:00:26.136 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:01:24.746 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 14:01:24.746 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:02:35.922 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 14:02:35.923 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:03:30.283 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 14:03:30.285 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:04:29.319 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 14:04:29.321 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:05:47.512 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 14:05:47.514 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:06:57.110 | WARNING  | rag.retriever:_get_playbook_context:124 - Playbook retrieval failed: argument 'query_embeddings': 'float' object cannot be converted to 'Sequence'
+2026-03-02 14:06:57.112 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:07:56.481 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-02 14:09:14.384 | INFO     | utils.report_exporter:export_markdown:123 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\processed\sample_nda_review.md
+2026-03-02 14:23:48.108 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-02 14:23:48.123 | INFO     | ingestion.parser:parse:51 - Parsing sample_nda_demo.txt (.txt)
+2026-03-02 14:23:48.130 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'sample_nda_demo.txt' (371 words)
+2026-03-02 14:23:48.134 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 11 clauses
+2026-03-02 14:23:48.139 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-02 14:25:07.858 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:26:59.054 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:27:56.379 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:29:24.969 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:30:43.671 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:31:46.122 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:33:10.526 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:34:21.839 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:35:17.445 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:36:36.414 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:37:49.825 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 14:39:23.189 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-02 14:40:39.427 | INFO     | utils.report_exporter:export_markdown:123 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\processed\sample_nda_review.md
+2026-03-02 15:49:57.861 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-02 15:49:57.895 | INFO     | ingestion.parser:parse:51 - Parsing layer_nda.pdf (.pdf)
+2026-03-02 15:49:59.762 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'layer_nda.pdf' (1225 words)
+2026-03-02 15:49:59.777 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 10 clauses
+2026-03-02 15:49:59.786 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-02 15:53:43.212 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 15:56:44.519 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 15:58:23.513 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:00:25.464 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:02:43.947 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:04:42.172 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:06:58.557 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:11:20.404 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:12:49.922 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:14:57.063 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:18:09.441 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-02 16:19:30.252 | INFO     | utils.report_exporter:export_markdown:123 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\layer_nda_2026-03-02.md
+2026-03-02 16:38:46.341 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-02 16:38:46.374 | INFO     | ingestion.parser:parse:51 - Parsing layer_nda.pdf (.pdf)
+2026-03-02 16:38:46.468 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'layer_nda.pdf' (1225 words)
+2026-03-02 16:38:46.469 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 10 clauses
+2026-03-02 16:38:46.473 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-02 16:40:32.752 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:43:17.409 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:44:54.641 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:47:11.474 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:49:40.548 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:51:36.556 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:54:10.278 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:56:47.413 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 16:58:37.133 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:00:37.610 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:03:21.954 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-02 17:05:20.486 | INFO     | utils.report_exporter:export_markdown:315 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\layer_nda_2026-03-02.md
+2026-03-02 17:05:26.133 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 10 clauses from contract layer_nda_2026-03-02
+2026-03-02 17:12:44.898 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-02 17:12:44.918 | INFO     | ingestion.parser:parse:51 - Parsing layer_nda.pdf (.pdf)
+2026-03-02 17:12:45.073 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'layer_nda.pdf' (1225 words)
+2026-03-02 17:12:45.079 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 10 clauses
+2026-03-02 17:12:45.083 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-02 17:14:23.078 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:16:54.829 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:19:06.503 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:20:53.866 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:24:34.675 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:26:43.887 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:28:48.360 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:31:47.602 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:34:16.077 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:36:28.674 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 17:40:44.051 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-02 17:41:53.200 | INFO     | utils.report_exporter:export_markdown:315 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\layer_nda_2026-03-02.md
+2026-03-02 17:41:59.155 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 10 clauses from contract layer_nda_2026-03-02
+2026-03-02 21:24:30.160 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-02 21:24:30.191 | INFO     | ingestion.parser:parse:51 - Parsing contract.pdf (.pdf)
+2026-03-02 21:24:31.713 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'contract.pdf' (4168 words)
+2026-03-02 21:24:31.766 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 16 clauses
+2026-03-02 21:24:31.783 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-02 21:26:06.975 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:27:59.546 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:29:05.998 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:30:48.203 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:32:14.100 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:34:05.429 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:37:20.746 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:40:42.440 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:45:37.063 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:49:41.974 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:52:27.053 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:54:35.060 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:56:45.106 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 21:59:06.561 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 22:00:21.715 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 22:02:02.470 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-02 22:04:03.186 | DEBUG    | core.review_pipeline:_resolve_contradictions:390 - Escalated clause_008 (term_termination): LOW → MEDIUM
+2026-03-02 22:04:03.186 | DEBUG    | core.review_pipeline:_resolve_contradictions:390 - Escalated clause_013 (warranties): LOW → MEDIUM
+2026-03-02 22:04:03.188 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-02 22:05:17.395 | INFO     | utils.report_exporter:export_markdown:315 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\contract_2026-03-02.md
+2026-03-02 22:05:17.401 | INFO     | utils.report_exporter:export_json:239 - JSON report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\contract_2026-03-02.json
+2026-03-02 22:05:34.458 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 16 clauses from contract contract_2026-03-02
+2026-03-03 13:42:25.409 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-03 13:42:25.449 | INFO     | ingestion.parser:parse:51 - Parsing contract.pdf (.pdf)
+2026-03-03 13:42:26.157 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'contract.pdf' (4168 words)
+2026-03-03 13:42:26.163 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 16 clauses
+2026-03-03 13:42:26.168 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-03 13:43:39.306 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 13:45:36.932 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 13:46:50.925 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 13:48:17.760 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 13:49:50.545 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 13:51:46.232 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 13:56:56.638 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:01:10.362 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:06:18.406 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:10:13.591 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:14:16.205 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:17:17.040 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:20:02.236 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:22:55.485 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:24:07.345 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:25:39.963 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 14:27:13.147 | DEBUG    | core.review_pipeline:_resolve_contradictions:390 - Escalated clause_008 (term_termination): LOW → MEDIUM
+2026-03-03 14:27:13.148 | DEBUG    | core.review_pipeline:_resolve_contradictions:390 - Escalated clause_013 (warranties): LOW → MEDIUM
+2026-03-03 14:27:13.149 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-03 14:28:33.405 | INFO     | utils.report_exporter:export_markdown:520 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\contract_2026-03-03.md
+2026-03-03 14:28:33.408 | INFO     | utils.report_exporter:export_json:435 - JSON report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\contract_2026-03-03.json
+2026-03-03 14:28:49.754 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 16 clauses from contract contract_2026-03-03
+2026-03-03 20:52:54.721 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-03 20:52:54.730 | INFO     | ingestion.parser:parse:51 - Parsing Sirena_AI_Systems_NDA_Priyansh.pdf (.pdf)
+2026-03-03 20:52:55.153 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'Sirena_AI_Systems_NDA_Priyansh.pdf' (1190 words)
+2026-03-03 20:52:55.155 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 2 clauses
+2026-03-03 20:52:55.163 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-03 20:54:29.375 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 20:59:10.596 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 21:00:51.581 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-03 21:01:45.283 | INFO     | utils.report_exporter:export_markdown:520 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\Sirena_AI_Systems_NDA_Priyansh_2026-03-03.md
+2026-03-03 21:01:45.284 | INFO     | utils.report_exporter:export_json:435 - JSON report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\Sirena_AI_Systems_NDA_Priyansh_2026-03-03.json
+2026-03-03 21:01:52.726 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 2 clauses from contract Sirena_AI_Systems_NDA_Priyansh_2026-03-03
+2026-03-03 21:28:26.010 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-03 21:28:26.035 | INFO     | ingestion.parser:parse:51 - Parsing Sirena_AI_Systems_NDA_Priyansh.pdf (.pdf)
+2026-03-03 21:28:26.115 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'Sirena_AI_Systems_NDA_Priyansh.pdf' (1190 words)
+2026-03-03 21:28:26.116 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 2 clauses
+2026-03-03 21:28:26.120 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-03 21:29:59.372 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 21:34:36.662 | WARNING  | rag.retriever:_get_playbook_context:140 - Playbook retrieval failed: Error executing plan: Internal error: Error creating hnsw segment reader: Nothing found on disk
+2026-03-03 21:34:36.791 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-03 21:36:25.180 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-03 21:37:09.359 | INFO     | utils.report_exporter:export_markdown:410 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\Sirena_AI_Systems_NDA_Priyansh_2026-03-03.md
+2026-03-03 21:37:15.974 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 2 clauses from contract Sirena_AI_Systems_NDA_Priyansh_2026-03-03
+2026-03-04 13:01:41.426 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-04 13:01:41.481 | INFO     | ingestion.parser:parse:51 - Parsing Sirena_AI_Systems_NDA_Priyansh.pdf (.pdf)
+2026-03-04 13:01:42.121 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'Sirena_AI_Systems_NDA_Priyansh.pdf' (1190 words)
+2026-03-04 13:01:42.124 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 2 clauses
+2026-03-04 13:01:42.126 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 13:03:17.993 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 13:08:16.709 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 13:10:57.962 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-04 13:11:44.376 | INFO     | utils.report_exporter:export_markdown:503 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\Sirena_AI_Systems_NDA_Priyansh_2026-03-04.md
+2026-03-04 13:11:44.378 | INFO     | utils.report_exporter:export_json:421 - JSON report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\Sirena_AI_Systems_NDA_Priyansh_2026-03-04.json
+2026-03-04 13:11:50.622 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 2 clauses from contract Sirena_AI_Systems_NDA_Priyansh_2026-03-04
+2026-03-04 13:21:21.543 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-04 13:21:21.574 | INFO     | ingestion.parser:parse:51 - Parsing Sirena_AI_Systems_NDA_Priyansh.pdf (.pdf)
+2026-03-04 13:21:21.677 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'Sirena_AI_Systems_NDA_Priyansh.pdf' (1190 words)
+2026-03-04 13:21:21.679 | SUCCESS  | ingestion.segmenter:segment:142 - Segmented into 2 clauses
+2026-03-04 13:21:21.682 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 13:22:52.825 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 13:27:54.924 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 13:29:34.112 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-04 13:30:20.942 | INFO     | utils.report_exporter:export_markdown:530 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\Sirena_AI_Systems_NDA_Priyansh_2026-03-04.md
+2026-03-04 13:30:28.149 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 2 clauses from contract Sirena_AI_Systems_NDA_Priyansh_2026-03-04
+2026-03-04 13:56:57.372 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-04 13:56:57.385 | INFO     | ingestion.parser:parse:51 - Parsing Sirena_AI_Systems_NDA_Priyansh.pdf (.pdf)
+2026-03-04 13:56:57.515 | INFO     | ingestion.segmenter:segment:538 - Segmenting 'Sirena_AI_Systems_NDA_Priyansh.pdf' (1190 words)
+2026-03-04 13:56:57.517 | SUCCESS  | ingestion.segmenter:segment:558 - Segmented into 0 clauses
+2026-03-04 13:56:57.521 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 13:58:58.238 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-04 14:02:25.099 | INFO     | utils.report_exporter:export_markdown:530 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\Sirena_AI_Systems_NDA_Priyansh_2026-03-04.md
+2026-03-04 14:08:41.603 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-04 14:08:41.636 | INFO     | ingestion.parser:parse:277 - Parsing Sirena_AI_Systems_NDA_Priyansh.pdf (.pdf)
+2026-03-04 14:08:42.056 | INFO     | ingestion.segmenter:segment:538 - Segmenting 'Sirena_AI_Systems_NDA_Priyansh.pdf' (1192 words)
+2026-03-04 14:08:42.071 | SUCCESS  | ingestion.segmenter:segment:558 - Segmented into 6 clauses
+2026-03-04 14:08:42.079 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:10:07.008 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:11:38.048 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 14:15:03.158 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:15:46.050 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 14:18:39.280 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:19:21.524 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 14:20:44.274 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:21:18.762 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 14:23:32.177 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:23:45.035 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 14:25:39.286 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:26:49.134 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 14:28:35.637 | DEBUG    | core.review_pipeline:_resolve_contradictions:1049 - Escalated clause_002 (confidentiality): LOW → MEDIUM
+2026-03-04 14:28:35.637 | DEBUG    | core.review_pipeline:_resolve_contradictions:1049 - Escalated clause_003 (confidentiality): LOW → MEDIUM
+2026-03-04 14:28:35.637 | DEBUG    | core.review_pipeline:_resolve_contradictions:1049 - Escalated clause_004 (confidentiality): LOW → MEDIUM
+2026-03-04 14:28:35.638 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-04 14:29:40.281 | INFO     | utils.report_exporter:export_markdown:530 - Markdown report saved: C:\Users\KIIT01\Documents\office\contract_agent\data\reviews\Sirena_AI_Systems_NDA_Priyansh_2026-03-04.md
+2026-03-04 14:29:43.997 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 6 clauses from contract Sirena_AI_Systems_NDA_Priyansh_2026-03-04
+2026-03-04 14:46:29.968 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\office\contract_agent\data\knowledge_base\chromadb
+2026-03-04 14:46:29.978 | INFO     | ingestion.parser:parse:277 - Parsing contract_2026-03-04.txt (.txt)
+2026-03-04 14:46:29.983 | INFO     | ingestion.segmenter:segment:538 - Segmenting 'contract_2026-03-04.txt' (752 words)
+2026-03-04 14:46:29.984 | SUCCESS  | ingestion.segmenter:segment:558 - Segmented into 1 clauses
+2026-03-04 14:46:29.987 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:48:37.912 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 14:51:43.259 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:24:20.972 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\test_contract_agent\data\knowledge_base\chromadb
+2026-03-04 17:24:20.983 | INFO     | ingestion.parser:parse:277 - Parsing contract_2026-03-04.txt (.txt)
+2026-03-04 17:24:20.987 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'contract_2026-03-04.txt' (752 words)
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 10: Found clause header - Number: 'WHEREAS', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 14: Found clause header - Number: '1', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 16: Found clause header - Number: '2', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 18: Found clause header - Number: '3.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 20: Found clause header - Number: '3.02', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 22: Found clause header - Number: '4.01', Heading: 'Confidentiality: (Insert standard confidentiality clause.)'
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 24: Found clause header - Number: '5.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 26: Found clause header - Number: '6.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 28: Found clause header - Number: '7.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 30: Found clause header - Number: '8.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 32: Found clause header - Number: '9.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 34: Found clause header - Number: '10.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 36: Found clause header - Number: '11.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 38: Found clause header - Number: '12.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 40: Found clause header - Number: '13.01', Heading: ''
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 42: Found clause header - Number: '14.01', Heading: 'Notices: (Insert standard notice provision.)'
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 44: Found clause header - Number: '15.01', Heading: 'Acknowledgement and Acceptance'
+2026-03-04 17:24:20.988 | DEBUG    | ingestion.segmenter:segment:130 - Found 17 potential clause boundaries
+2026-03-04 17:24:20.990 | SUCCESS  | ingestion.segmenter:segment:144 - Segmented into 14 clauses
+2026-03-04 17:24:20.992 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:25:46.198 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:27:01.481 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:28:25.768 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:28:36.419 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:30:14.118 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:30:25.072 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:32:54.498 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:33:11.291 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:35:13.377 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:35:25.320 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:38:32.906 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:39:07.935 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:41:35.036 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:41:49.488 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:43:44.837 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:44:06.208 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:46:31.204 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:46:44.498 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:48:58.919 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:49:09.988 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:51:20.054 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:51:33.994 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:52:47.549 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:53:01.349 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:55:34.331 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:55:48.037 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 17:58:22.204 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
+2026-03-04 17:58:33.182 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.1
+2026-03-04 18:00:21.364 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.2
+2026-03-04 18:02:03.724 | INFO     | utils.report_exporter:export_markdown:530 - Markdown report saved: C:\Users\KIIT01\Documents\test_contract_agent\data\reviews\contract_2026-03-04_2026-03-04.md
+2026-03-04 18:02:03.732 | INFO     | utils.report_exporter:export_json:447 - JSON report saved: C:\Users\KIIT01\Documents\test_contract_agent\data\reviews\contract_2026-03-04_2026-03-04.json
+2026-03-04 18:02:07.682 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 14 clauses from contract contract_2026-03-04_2026-03-04

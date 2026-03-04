@@ -1,0 +1,110 @@
+{
+  "layer_nda_2026-03-02": {
+    "contract_id": "layer_nda_2026-03-02",
+    "filename": "layer_nda.pdf",
+    "reviewed_at": "2026-03-02T17:41:53.193761",
+    "overall_risk": "HIGH",
+    "recommendation": "Negotiate before signing",
+    "contract_type": "Employment Agreement",
+    "parties": [
+      "ALPHATECH SOLUTIONS PRIVATE LIMITED",
+      "MS. PRIYA SHARMA"
+    ],
+    "governing_law": "India or null",
+    "total_clauses": 10,
+    "high_risk_count": 3,
+    "medium_risk_count": 0,
+    "low_risk_count": 7,
+    "json_path": "C:\\Users\\KIIT01\\Documents\\office\\contract_agent\\data\\reviews\\layer_nda_2026-03-02.json"
+  },
+  "contract_2026-03-02": {
+    "contract_id": "contract_2026-03-02",
+    "filename": "contract.pdf",
+    "reviewed_at": "2026-03-02T22:05:17.375012",
+    "overall_risk": "HIGH",
+    "recommendation": "Negotiate before signing",
+    "contract_type": "MSA (Master Service Agreement)",
+    "parties": [
+      "Company A",
+      "Company B"
+    ],
+    "governing_law": "State/Country",
+    "total_clauses": 16,
+    "high_risk_count": 6,
+    "medium_risk_count": 3,
+    "low_risk_count": 7,
+    "json_path": "C:\\Users\\KIIT01\\Documents\\office\\contract_agent\\data\\reviews\\contract_2026-03-02.json"
+  },
+  "contract_2026-03-03": {
+    "contract_id": "contract_2026-03-03",
+    "filename": "contract.pdf",
+    "reviewed_at": "2026-03-03T14:28:33.398330",
+    "overall_risk": "HIGH",
+    "recommendation": "Negotiate before signing",
+    "contract_type": "MSA (Master Service Agreement)",
+    "parties": [
+      "Company A",
+      "Company B"
+    ],
+    "governing_law": "State/Country",
+    "total_clauses": 16,
+    "high_risk_count": 9,
+    "medium_risk_count": 2,
+    "low_risk_count": 5,
+    "json_path": "C:\\Users\\KIIT01\\Documents\\office\\contract_agent\\data\\reviews\\contract_2026-03-03.json"
+  },
+  "Sirena_AI_Systems_NDA_Priyansh_2026-03-03": {
+    "contract_id": "Sirena_AI_Systems_NDA_Priyansh_2026-03-03",
+    "filename": "Sirena_AI_Systems_NDA_Priyansh.pdf",
+    "reviewed_at": "2026-03-03T21:37:09.346267",
+    "overall_risk": "HIGH",
+    "recommendation": "Negotiate before signing",
+    "contract_type": "NDA",
+    "parties": [
+      "SIRENA AI SYSTEMS PRIVATE LIMITED",
+      "the Disclosing Party"
+    ],
+    "governing_law": "null",
+    "total_clauses": 2,
+    "high_risk_count": 1,
+    "medium_risk_count": 0,
+    "low_risk_count": 1,
+    "json_path": "C:\\Users\\KIIT01\\Documents\\office\\contract_agent\\data\\reviews\\Sirena_AI_Systems_NDA_Priyansh_2026-03-03.json"
+  },
+  "Sirena_AI_Systems_NDA_Priyansh_2026-03-04": {
+    "contract_id": "Sirena_AI_Systems_NDA_Priyansh_2026-03-04",
+    "filename": "Sirena_AI_Systems_NDA_Priyansh.pdf",
+    "reviewed_at": "2026-03-04T14:29:40.273125",
+    "overall_risk": "HIGH",
+    "recommendation": "Negotiate before signing",
+    "contract_type": "NDA",
+    "parties": [
+      "SIRENA AI SYSTEMS PRIVATE LIMITED",
+      "the Disclosing Party"
+    ],
+    "governing_law": "null",
+    "total_clauses": 6,
+    "high_risk_count": 2,
+    "medium_risk_count": 3,
+    "low_risk_count": 1,
+    "json_path": "C:\\Users\\KIIT01\\Documents\\office\\contract_agent\\data\\reviews\\Sirena_AI_Systems_NDA_Priyansh_2026-03-04.json"
+  },
+  "contract_2026-03-04_2026-03-04": {
+    "contract_id": "contract_2026-03-04_2026-03-04",
+    "filename": "contract_2026-03-04.txt",
+    "reviewed_at": "2026-03-04T18:02:03.699737",
+    "overall_risk": "HIGH",
+    "recommendation": "Negotiate before signing",
+    "contract_type": "NDA",
+    "parties": [
+      "ABC",
+      "XYZ"
+    ],
+    "governing_law": "India",
+    "total_clauses": 14,
+    "high_risk_count": 4,
+    "medium_risk_count": 7,
+    "low_risk_count": 3,
+    "json_path": "C:\\Users\\KIIT01\\Documents\\test_contract_agent\\data\\reviews\\contract_2026-03-04_2026-03-04.json"
+  }
+}
