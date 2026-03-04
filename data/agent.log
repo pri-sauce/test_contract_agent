@@ -481,3 +481,44 @@ prompt
 2026-03-04 18:02:03.724 | INFO     | utils.report_exporter:export_markdown:530 - Markdown report saved: C:\Users\KIIT01\Documents\test_contract_agent\data\reviews\contract_2026-03-04_2026-03-04.md
 2026-03-04 18:02:03.732 | INFO     | utils.report_exporter:export_json:447 - JSON report saved: C:\Users\KIIT01\Documents\test_contract_agent\data\reviews\contract_2026-03-04_2026-03-04.json
 2026-03-04 18:02:07.682 | INFO     | rag.knowledge_base:add_contract_clauses:219 - Stored 14 clauses from contract contract_2026-03-04_2026-03-04
+2026-03-04 21:10:52.168 | INFO     | rag.knowledge_base:__init__:76 - Knowledge base initialized at C:\Users\KIIT01\Documents\test_contract_agent\data\knowledge_base\chromadb
+2026-03-04 21:10:52.199 | INFO     | ingestion.parser:parse:277 - Parsing contract.pdf (.pdf)
+2026-03-04 21:10:53.162 | INFO     | ingestion.segmenter:segment:122 - Segmenting 'contract.pdf' (4175 words)
+2026-03-04 21:10:53.162 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 0: Found clause header - Number: 'SERVICE AGREEMENT', Heading: ''
+2026-03-04 21:10:53.163 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 10: Found clause header - Number: '1', Heading: 'PARTIES AND RECITALS'
+2026-03-04 21:10:53.163 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 15: Found clause header - Number: 'WHEREAS', Heading: ''
+2026-03-04 21:10:53.163 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 19: Found clause header - Number: 'WHEREAS', Heading: ''
+2026-03-04 21:10:53.163 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 23: Found clause header - Number: 'WHEREAS', Heading: ''
+2026-03-04 21:10:53.163 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 29: Found clause header - Number: '2', Heading: 'DEFINITIONS'
+2026-03-04 21:10:53.163 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 86: Found clause header - Number: '3', Heading: 'SCOPE OF SERVICES'
+2026-03-04 21:10:53.163 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 132: Found clause header - Number: '1', Heading: 'Business Day of'
+2026-03-04 21:10:53.164 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 136: Found clause header - Number: '3', Heading: 'Business Days'
+2026-03-04 21:10:53.164 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 143: Found clause header - Number: '1', Heading: 'Business Day'
+2026-03-04 21:10:53.164 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 147: Found clause header - Number: '3', Heading: 'Business'
+2026-03-04 21:10:53.164 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 151: Found clause header - Number: '5', Heading: 'Business'
+2026-03-04 21:10:53.164 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 189: Found clause header - Number: '4', Heading: 'TERM'
+2026-03-04 21:10:53.164 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 238: Found clause header - Number: '5', Heading: 'COMPENSATION AND PAYMENT'
+2026-03-04 21:10:53.164 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 243: Found clause header - Number: '(a)', Heading: 'A fixed monthly fee of [￿]'
+2026-03-04 21:10:53.165 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 291: Found clause header - Number: '6', Heading: 'DELIVERABLES AND ACCEPTANCE'
+2026-03-04 21:10:53.165 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 345: Found clause header - Number: '7', Heading: 'OBLIGATIONS OF SERVICE PROVIDER'
+2026-03-04 21:10:53.165 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 373: Found clause header - Number: '8', Heading: 'OBLIGATIONS OF CLIENT'
+2026-03-04 21:10:53.165 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 393: Found clause header - Number: '9', Heading: 'REPRESENTATIONS AND WARRANTIES'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 412: Found clause header - Number: '(a)', Heading: 'The Service Provider has'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 417: Found clause header - Number: '(b)', Heading: 'The Services will be performed in a'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 421: Found clause header - Number: '(c)', Heading: 'The Services will comply with all applicable'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 424: Found clause header - Number: '(d)', Heading: 'The Deliverables will be free'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 427: Found clause header - Number: '(e)', Heading: 'The'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 433: Found clause header - Number: '(a)', Heading: 'The Client has provided the Service'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 437: Found clause header - Number: '(b)', Heading: 'The Client has all necessary rights, licenses, and permissions to'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 442: Found clause header - Number: '', Heading: 'EXCEPT AS EXPRESSLY SET FORTH IN THIS SEC-'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 444: Found clause header - Number: '', Heading: 'WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATU-'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 445: Found clause header - Number: '', Heading: 'TORY, OR OTHERWISE, INCLUDING WITHOUT LIMITATION ANY IM-'
+2026-03-04 21:10:53.166 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 446: Found clause header - Number: '', Heading: 'PLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PAR-'
+2026-03-04 21:10:53.167 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 447: Found clause header - Number: '', Heading: 'TICULAR PURPOSE, TITLE, NON-INFRINGEMENT, OR QUIET ENJOY-'
+2026-03-04 21:10:53.167 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 450: Found clause header - Number: 'T.', Heading: 'THE SERVICE PROVIDER DOES NOT WARRANT THAT THE'
+2026-03-04 21:10:53.167 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 451: Found clause header - Number: '', Heading: 'SERVICES OR DELIVERABLES WILL BE ERROR-FREE OR UNINTER-'
+2026-03-04 21:10:53.167 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 452: Found clause header - Number: '', Heading: 'RUPTED, OR THAT ANY DEFECTS WILL BE CORRECTED.'
+2026-03-04 21:10:53.167 | DEBUG    | ingestion.segmenter:_find_boundaries:167 - Line 455: Found clause header - Number: '0', Heading: 'CONFIDENTIALITY'
+2026-03-04 21:10:53.167 | DEBUG    | ingestion.segmenter:segment:130 - Found 35 potential clause boundaries
+2026-03-04 21:10:53.176 | SUCCESS  | ingestion.segmenter:segment:144 - Segmented into 27 clauses
+2026-03-04 21:10:53.188 | DEBUG    | core.llm:generate:76 - Generating with llama3.2:3b | temp=0.0
