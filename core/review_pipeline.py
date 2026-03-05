@@ -286,6 +286,15 @@ class ReviewPipeline:
                 page_num=getattr(clause, "page_hint", 0),
             )
 
+        # ── Recital cap: WHEREAS / PREAMBLE / BACKGROUND are narrative, not operative.
+        # They cannot be HIGH or MEDIUM — max risk is LOW.
+        is_recital = clause.metadata.get("is_recital", False)
+
+        # ── Placeholder density: template with unfilled blanks.
+        # Don't hunt for evidence quotes — they don't exist yet.
+        placeholder_pct = clause.metadata.get("placeholder_pct", 0.0)
+        is_template     = placeholder_pct > 0.04   # >4% of tokens are blanks
+
         try:
             # RAG context
             playbook_context = ""
@@ -296,14 +305,17 @@ class ReviewPipeline:
                     governing_law=governing_law or None,
                 )
 
-            # ── Pass 1: evidence extraction (temp=0, 512 tokens) ─────
-            raw_quotes = llm.generate(
-                prompt=prompt_extract_evidence(clause.text, clause.clause_type),
-                system=SYSTEM_CONTRACT_REVIEWER,
-                temperature=0.0,
-                max_tokens=512,
-            )
-            verified_quotes = self._verify_quotes(raw_quotes, clause.text)
+            # ── Pass 1: evidence extraction (skip for template clauses) ──
+            if is_template:
+                verified_quotes = []   # No real text to quote from blanks
+            else:
+                raw_quotes = llm.generate(
+                    prompt=prompt_extract_evidence(clause.text, clause.clause_type),
+                    system=SYSTEM_CONTRACT_REVIEWER,
+                    temperature=0.0,
+                    max_tokens=512,
+                )
+                verified_quotes = self._verify_quotes(raw_quotes, clause.text)
 
             # ── Pass 2: full review anchored to quotes (2048 tokens) ─
             response = llm.generate(
@@ -313,6 +325,8 @@ class ReviewPipeline:
                     clause_heading=clause.heading,
                     playbook_context=playbook_context,
                     verified_quotes=verified_quotes,
+                    is_recital=is_recital,
+                    is_template=is_template,
                 ),
                 system=SYSTEM_CONTRACT_REVIEWER,
                 temperature=0.1,
@@ -320,6 +334,26 @@ class ReviewPipeline:
             )
 
             review = self._parse_review_response(response, clause)
+
+            # ── Recital cap: recitals cannot be HIGH or MEDIUM ──────────────
+            if is_recital:
+                RECITAL_MAX = {"HIGH": "LOW", "MEDIUM": "LOW"}
+                if review.risk_level in RECITAL_MAX:
+                    review.risk_level = RECITAL_MAX[review.risk_level]
+                    review.reasoning  = (
+                        "[Recital/WHEREAS clause — narrative context only, no legal force. "
+                        "Risk capped at LOW.] " + review.reasoning
+                    )
+
+            # ── Template note: flag placeholder clauses clearly ─────────────
+            if is_template and not review.reasoning.startswith("[Template"):
+                review.reasoning = (
+                    f"[Template clause — {placeholder_pct*100:.0f}% unfilled placeholders. "
+                    "Evidence quotes unreliable; review once values are filled in.] "
+                    + review.reasoning
+                )
+                # Suppress evidence for template clauses — it's all hallucinated
+                review.evidence_quotes = [""] * len(review.evidence_quotes)
 
             # Post-parse: discard any evidence the model invented
             review.evidence_quotes = self._filter_hallucinated_evidence(
@@ -588,6 +622,29 @@ class ReviewPipeline:
         reason_match = re.search(r"REASONING:\s*(.*?)$", response, re.DOTALL)
         if reason_match:
             reasoning = reason_match.group(1).strip()
+            # Strip leaked ** from reasoning end
+            reasoning = re.sub(r"\s*\*\*\s*$", "", reasoning).strip()
+
+        # ── Sanitize: strip raw format labels that bled into field values ──
+        # Happens when the model outputs format tags inside issues/reasoning blocks.
+        _FORMAT_LEAK = re.compile(
+            r"^(RISK_LEVEL|REDLINES?|REPLACE|WITH|NEW_CLAUSE|REASONING|ISSUES?)"
+            r"\s*:\s*", re.IGNORECASE | re.MULTILINE
+        )
+        issues          = [_FORMAT_LEAK.sub("", i).strip() for i in issues if i.strip()]
+        evidence_quotes = [e for e in evidence_quotes]   # preserve 1:1 with issues
+
+        # Drop any issue that is just a format artifact (< 10 chars after cleanup)
+        cleaned_pairs = [
+            (iss, ev) for iss, ev in zip(issues, evidence_quotes)
+            if len(iss.strip()) >= 10
+        ]
+        issues          = [p[0] for p in cleaned_pairs]
+        evidence_quotes = [p[1] for p in cleaned_pairs]
+
+        # Sanitize new_clause texts — strip leaked markdown bold/format
+        for nc in new_clauses:
+            nc["text"] = re.sub(r"\*\*\s*$", "", nc.get("text", "")).strip().strip('"')
 
         return ClauseReview(
             clause_id=clause.clause_id,

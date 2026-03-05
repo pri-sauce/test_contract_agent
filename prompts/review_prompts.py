@@ -187,11 +187,39 @@ def prompt_review_clause(
     clause_heading: str = "",
     playbook_context: str = "",
     verified_quotes: list = None,
+    is_recital: bool = False,
+    is_template: bool = False,
 ) -> str:
     """
     Pass 2: Full risk review anchored to pre-verified evidence quotes.
     """
     heading = f"**{clause_heading}**\n" if clause_heading else ""
+
+    # ── Special instructions for recitals ──────────────────────────────
+    recital_instruction = ""
+    if is_recital:
+        recital_instruction = """
+IMPORTANT: This is a RECITAL / WHEREAS clause — narrative background context only.
+Recitals have NO operative legal force. They cannot impose obligations or liabilities.
+- Maximum risk rating is LOW. Do NOT rate this HIGH or MEDIUM.
+- Do NOT raise issues about indemnification, liability, IP, or missing obligations.
+- Only flag genuine structural problems (e.g. contradicts operative clauses).
+- If no structural issues exist, rate ACCEPTABLE.
+---
+"""
+
+    # ── Special instructions for template/placeholder clauses ──────────
+    template_instruction = ""
+    if is_template:
+        template_instruction = """
+IMPORTANT: This clause contains unfilled template placeholders ([￿], [PLACEHOLDER],
+[INSERT...], ___, etc.). This is a draft template, not an executed contract.
+- Do NOT treat blank placeholders as missing obligations — they are intentional gaps.
+- Focus only on structural/legal issues visible in the existing language.
+- Do NOT fabricate evidence quotes from placeholder text.
+- Rate based on structure, not on missing placeholder values.
+---
+"""
 
     playbook_section = ""
     if playbook_context:
@@ -202,7 +230,7 @@ Our company's playbook for {clause_type} clauses:
 """
 
     quotes_section = ""
-    if verified_quotes:
+    if verified_quotes and not is_template:
         quote_lines = "\n".join(f'  - "{q}"' for q in verified_quotes if q)
         if quote_lines:
             quotes_section = f"""
@@ -213,7 +241,7 @@ Use these as EVIDENCE quotes where relevant — they are confirmed real:
 """
 
     return f"""Review this {clause_type} clause for legal risks.
-{playbook_section}{quotes_section}
+{recital_instruction}{template_instruction}{playbook_section}{quotes_section}
 Clause to review:
 {heading}{clause_text}
 

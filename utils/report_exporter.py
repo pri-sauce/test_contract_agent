@@ -197,7 +197,8 @@ class ReportExporter:
         if compact:
             if page_ok:
                 lines += [f"**Location:** Page {page}  "]
-            lines += [f"**Risk:** {review.risk_level} | **Type:** {review.clause_type}", ""]
+            recital_badge = " *(recital — narrative only)*" if getattr(review, "escalated", False) is False and "Recital" in (review.reasoning or "") else ""
+            lines += [f"**Risk:** {review.risk_level} | **Type:** {review.clause_type}{recital_badge}", ""]
             if review.issues:
                 lines += [f"_{self._clean(review.issues[0])}_", ""]
             lines += ["---", ""]
@@ -290,19 +291,32 @@ class ReportExporter:
 
         # Proposed New Clauses
         new_clauses = getattr(review, "new_clauses", [])
-        if new_clauses:
+        # Filter out garbage new clauses (no text, or text is just placeholders/bullets)
+        real_new_clauses = []
+        for nc in new_clauses:
+            text = nc.get("text", "").strip().strip('"').strip("**").strip("-").strip()
+            if not text or len(text) < 20:
+                continue
+            # Skip if title or text is just a leaked format artifact
+            title = nc.get("title", "")
+            _junk = re.compile(r"^[-*]{1,3}$|^\s*$", re.MULTILINE)
+            if _junk.match(title.strip()):
+                continue
+            # Clean up title: strip trailing "\n-**" artifacts
+            title = re.sub(r"[\n\r]*[-*]+\s*$", "", title).strip().strip('"')
+            real_new_clauses.append({"title": title, "reason": nc.get("reason", ""), "text": text})
+
+        if real_new_clauses:
             lines += [
                 "**Proposed New Clauses:**", "",
                 "> These clauses do not exist in the current contract.",
                 "> They should be **added** to address the missing obligations identified above.",
                 "",
             ]
-            for nc in new_clauses:
+            for nc in real_new_clauses:
                 title  = nc.get("title", "New Clause")
                 reason = nc.get("reason", "")
                 text   = nc.get("text", "")
-                if not text:
-                    continue
                 lines += [f"**✏ Proposed: {title}**", ""]
                 if reason:
                     lines += [f"> **Why needed:** {reason}", ""]
