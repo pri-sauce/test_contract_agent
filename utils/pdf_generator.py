@@ -1,15 +1,14 @@
 """
 utils/pdf_generator.py - Professional PDF Report Generator
-Converts markdown reports to clean, professional PDFs with proper formatting.
+Converts markdown reports to clean, professional PDFs using pandoc + wkhtmltopdf.
 """
 
-import re
+import subprocess
+import shutil
+import tempfile
 from pathlib import Path
 from datetime import datetime
 
-# ---------------------------------------------------------------------------
-# Logger — uses loguru if available, falls back to stdlib logging
-# ---------------------------------------------------------------------------
 try:
     from loguru import logger
 except ImportError:
@@ -17,378 +16,112 @@ except ImportError:
     import sys
 
     class _LoguruCompat:
-        """Minimal loguru-compatible logger backed by stdlib logging."""
         def __init__(self):
             self._log = _logging.getLogger("pdf_generator")
             if not self._log.handlers:
-                handler = _logging.StreamHandler(sys.stdout)
-                handler.setFormatter(_logging.Formatter(
+                h = _logging.StreamHandler(sys.stdout)
+                h.setFormatter(_logging.Formatter(
                     "%(asctime)s | %(levelname)-8s | %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S",
                 ))
-                self._log.addHandler(handler)
+                self._log.addHandler(h)
                 self._log.setLevel(_logging.DEBUG)
-
-        def info(self, msg, *a, **kw):    self._log.info(msg, *a, **kw)
-        def warning(self, msg, *a, **kw): self._log.warning(msg, *a, **kw)
-        def error(self, msg, *a, **kw):   self._log.error(msg, *a, **kw)
-        def success(self, msg, *a, **kw): self._log.info("✓ " + msg, *a, **kw)
-        def debug(self, msg, *a, **kw):   self._log.debug(msg, *a, **kw)
+        def info(self, m, *a, **k):    self._log.info(m, *a, **k)
+        def warning(self, m, *a, **k): self._log.warning(m, *a, **k)
+        def error(self, m, *a, **k):   self._log.error(m, *a, **k)
+        def success(self, m, *a, **k): self._log.info("✓ " + m, *a, **k)
+        def debug(self, m, *a, **k):   self._log.debug(m, *a, **k)
 
     logger = _LoguruCompat()
 
-# ---------------------------------------------------------------------------
-# ReportLab imports + colour palette (all inside one try block so the colour
-# constants are only defined when reportlab is actually present)
-# ---------------------------------------------------------------------------
-try:
-    from reportlab.lib.pagesizes import A4
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-    from reportlab.lib.units import cm
-    from reportlab.lib import colors
-    from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER
-    from reportlab.platypus import (
-        SimpleDocTemplate, Paragraph, Spacer,
-        Table, TableStyle, HRFlowable, PageBreak, Preformatted,
-    )
 
-    REPORTLAB_AVAILABLE = True
+_PANDOC      = shutil.which("pandoc")
+_WKHTMLTOPDF = shutil.which("wkhtmltopdf")
+PANDOC_AVAILABLE = bool(_PANDOC and _WKHTMLTOPDF)
 
-    # Colour palette — mirrors the original WeasyPrint CSS
-    BLUE_DARK   = colors.HexColor("#1e40af")
-    BLUE_DARKER = colors.HexColor("#1e3a8a")
-    BLUE_MID    = colors.HexColor("#2563eb")
-    BLUE_LIGHT  = colors.HexColor("#f0f9ff")
-    GREY_TEXT   = colors.HexColor("#333333")
-    GREY_LIGHT  = colors.HexColor("#6b7280")
-    GREY_BORDER = colors.HexColor("#d1d5db")
-    RED_CODE    = colors.HexColor("#dc2626")
-    BG_CODE     = colors.HexColor("#f8f9fa")
-    BG_ROW_ALT  = colors.HexColor("#f9fafb")
-    WHITE       = colors.white
-
-except ImportError:
-    REPORTLAB_AVAILABLE = False
-    logger.warning("ReportLab not installed. PDF generation will be unavailable.")
+if not _PANDOC:
+    logger.warning("pandoc not found. Install: https://pandoc.org/installing.html")
+if not _WKHTMLTOPDF:
+    logger.warning("wkhtmltopdf not found. Install: https://wkhtmltopdf.org/downloads.html")
 
 
-# ---------------------------------------------------------------------------
-# Styles
-# ---------------------------------------------------------------------------
+def _build_html(body_html: str, title: str, generated_at: str) -> str:
+    """Wrap converted HTML body in a full styled document."""
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{title}</title>
+<style>
+  body {{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11pt; line-height: 1.6; color: #333;
+    margin: 0; padding: 20px 30px 60px 30px;
+  }}
+  h1 {{
+    font-size: 22pt; font-weight: 700; color: #1a1a1a;
+    border-bottom: 3px solid #2563eb; padding-bottom: 8pt; margin-bottom: 16pt;
+  }}
+  h2 {{ font-size: 16pt; font-weight: 600; color: #1e40af; margin-top: 22pt; margin-bottom: 8pt; }}
+  h3 {{ font-size: 13pt; font-weight: 600; color: #1e3a8a; margin-top: 14pt; margin-bottom: 6pt; }}
+  p  {{ margin-bottom: 8pt; text-align: justify; }}
+  strong {{ font-weight: 600; color: #1a1a1a; }}
+  em     {{ font-style: italic; color: #4b5563; }}
+  ul, ol {{ margin-left: 20pt; margin-bottom: 10pt; }}
+  li     {{ margin-bottom: 3pt; }}
+  table  {{ width: 100%; border-collapse: collapse; margin: 14pt 0; font-size: 10pt; }}
+  thead  {{ background-color: #1e40af; color: white; }}
+  th     {{ padding: 7pt 8pt; text-align: left; font-weight: 600; border: 1px solid #1e40af; }}
+  td     {{ padding: 5pt 8pt; border: 1px solid #d1d5db; }}
+  tbody tr:nth-child(even) {{ background-color: #f9fafb; }}
+  blockquote {{
+    margin: 10pt 0; padding: 8pt 14pt;
+    background-color: #f0f9ff; border-left: 4px solid #3b82f6;
+    font-style: italic; color: #1e3a8a;
+  }}
+  pre {{
+    background-color: #f8f9fa; border: 1px solid #dee2e6;
+    border-radius: 4px; padding: 10pt; margin: 10pt 0;
+    font-family: 'Courier New', monospace; font-size: 9pt; line-height: 1.4;
+    white-space: pre-wrap; word-wrap: break-word;
+  }}
+  code {{
+    background-color: #f1f5f9; padding: 1pt 4pt;
+    border-radius: 3px; font-family: 'Courier New', monospace;
+    font-size: 9pt; color: #dc2626;
+  }}
+  pre code {{ background: none; color: inherit; padding: 0; border-radius: 0; }}
+  hr {{ border: none; border-top: 1px solid #d1d5db; margin: 18pt 0; }}
+  a  {{ color: #2563eb; text-decoration: none; }}
+  .footer {{
+    position: fixed; bottom: 0; left: 0; right: 0;
+    border-top: 1px solid #e5e7eb;
+    background: white;
+    padding: 6pt 20pt;
+    font-size: 8pt; color: #6b7280;
+    display: flex; justify-content: space-between;
+  }}
+</style>
+</head>
+<body>
+{body_html}
+<div class="footer">
+  <span>Contract Review Agent &mdash; Confidential</span>
+  <span>Generated {generated_at}</span>
+</div>
+</body>
+</html>"""
 
-def _build_styles() -> dict:
-    """Return a dict of named ParagraphStyle objects."""
-    styles = {}
-
-    styles["Normal"] = ParagraphStyle(
-        "Normal",
-        fontName="Helvetica",
-        fontSize=11,
-        leading=18,
-        textColor=GREY_TEXT,
-        alignment=TA_JUSTIFY,
-        spaceAfter=6,
-    )
-    styles["H1"] = ParagraphStyle(
-        "H1",
-        fontName="Helvetica-Bold",
-        fontSize=24,
-        leading=30,
-        textColor=colors.HexColor("#1a1a1a"),
-        spaceBefore=0,
-        spaceAfter=14,
-    )
-    styles["H2"] = ParagraphStyle(
-        "H2",
-        fontName="Helvetica-Bold",
-        fontSize=18,
-        leading=24,
-        textColor=BLUE_DARK,
-        spaceBefore=18,
-        spaceAfter=10,
-    )
-    styles["H3"] = ParagraphStyle(
-        "H3",
-        fontName="Helvetica-Bold",
-        fontSize=14,
-        leading=20,
-        textColor=BLUE_DARKER,
-        spaceBefore=12,
-        spaceAfter=6,
-    )
-    styles["Blockquote"] = ParagraphStyle(
-        "Blockquote",
-        fontName="Helvetica-Oblique",
-        fontSize=11,
-        leading=16,
-        textColor=BLUE_DARKER,
-        leftIndent=15,
-        rightIndent=10,
-        spaceBefore=8,
-        spaceAfter=8,
-        backColor=BLUE_LIGHT,
-        borderPadding=8,
-    )
-    styles["Code"] = ParagraphStyle(
-        "Code",
-        fontName="Courier",
-        fontSize=9,
-        leading=13,
-        textColor=GREY_TEXT,
-        backColor=BG_CODE,
-        leftIndent=10,
-        rightIndent=10,
-        spaceBefore=8,
-        spaceAfter=8,
-        borderPadding=8,
-    )
-    styles["ListItem"] = ParagraphStyle(
-        "ListItem",
-        fontName="Helvetica",
-        fontSize=11,
-        leading=16,
-        textColor=GREY_TEXT,
-        leftIndent=20,
-        spaceAfter=3,
-    )
-    styles["Footer"] = ParagraphStyle(
-        "Footer",
-        fontName="Helvetica",
-        fontSize=8,
-        leading=12,
-        textColor=GREY_LIGHT,
-        alignment=TA_CENTER,
-    )
-
-    return styles
-
-
-# ---------------------------------------------------------------------------
-# Markdown → ReportLab flowables parser
-# ---------------------------------------------------------------------------
-
-class _MarkdownParser:
-    """
-    Lightweight parser that converts a markdown string into a list of
-    ReportLab Flowable objects.  Handles: headings, paragraphs, bold/italic
-    inline, unordered/ordered lists, blockquotes, fenced code blocks, inline
-    code, horizontal rules, and GFM-style pipe tables.
-    """
-
-    def __init__(self, styles: dict):
-        self.styles = styles
-
-    def parse(self, markdown_text: str) -> list:
-        flowables = []
-        lines = markdown_text.splitlines()
-        i = 0
-
-        while i < len(lines):
-            line = lines[i]
-
-            # Fenced code block
-            if line.strip().startswith("```"):
-                code_lines = []
-                i += 1
-                while i < len(lines) and not lines[i].strip().startswith("```"):
-                    code_lines.append(lines[i])
-                    i += 1
-                flowables.append(
-                    Preformatted("\n".join(code_lines), self.styles["Code"])
-                )
-                i += 1
-                continue
-
-            # Horizontal rule
-            if re.match(r"^[-*_]{3,}\s*$", line.strip()):
-                flowables.append(Spacer(1, 6))
-                flowables.append(HRFlowable(width="100%", thickness=1, color=GREY_BORDER))
-                flowables.append(Spacer(1, 6))
-                i += 1
-                continue
-
-            # H1
-            if line.startswith("# "):
-                flowables.append(Paragraph(self._inline(line[2:].strip()), self.styles["H1"]))
-                flowables.append(HRFlowable(width="100%", thickness=3, color=BLUE_MID, spaceAfter=10))
-                i += 1
-                continue
-
-            # H2
-            if line.startswith("## "):
-                flowables.append(Paragraph(self._inline(line[3:].strip()), self.styles["H2"]))
-                i += 1
-                continue
-
-            # H3
-            if line.startswith("### "):
-                flowables.append(Paragraph(self._inline(line[4:].strip()), self.styles["H3"]))
-                i += 1
-                continue
-
-            # Blockquote
-            if line.startswith("> "):
-                bq_lines = []
-                while i < len(lines) and lines[i].startswith("> "):
-                    bq_lines.append(lines[i][2:])
-                    i += 1
-                flowables.append(
-                    Paragraph(self._inline(" ".join(bq_lines)), self.styles["Blockquote"])
-                )
-                continue
-
-            # Unordered list
-            if re.match(r"^[-*+] ", line):
-                while i < len(lines) and re.match(r"^[-*+] ", lines[i]):
-                    item = lines[i][2:].strip()
-                    flowables.append(Paragraph(f"• {self._inline(item)}", self.styles["ListItem"]))
-                    i += 1
-                flowables.append(Spacer(1, 4))
-                continue
-
-            # Ordered list
-            if re.match(r"^\d+\. ", line):
-                while i < len(lines) and re.match(r"^\d+\. ", lines[i]):
-                    m = re.match(r"^(\d+)\. (.*)", lines[i])
-                    flowables.append(
-                        Paragraph(f"{m.group(1)}. {self._inline(m.group(2))}", self.styles["ListItem"])
-                    )
-                    i += 1
-                flowables.append(Spacer(1, 4))
-                continue
-
-            # GFM pipe table
-            if "|" in line:
-                table_lines = []
-                while i < len(lines) and "|" in lines[i]:
-                    table_lines.append(lines[i])
-                    i += 1
-                tbl = self._parse_table(table_lines)
-                if tbl:
-                    flowables.append(tbl)
-                    flowables.append(Spacer(1, 8))
-                continue
-
-            # Blank line
-            if line.strip() == "":
-                flowables.append(Spacer(1, 6))
-                i += 1
-                continue
-
-            # Normal paragraph — collect until a structural break
-            para_lines = []
-            while i < len(lines):
-                l = lines[i]
-                if (
-                    l.strip() == ""
-                    or l.startswith(("#", ">", "```", "|"))
-                    or re.match(r"^[-*+] ", l)
-                    or re.match(r"^\d+\. ", l)
-                    or re.match(r"^[-*_]{3,}\s*$", l.strip())
-                ):
-                    break
-                para_lines.append(l)
-                i += 1
-            text = " ".join(para_lines).strip()
-            if text:
-                flowables.append(Paragraph(self._inline(text), self.styles["Normal"]))
-
-        return flowables
-
-    def _inline(self, text: str) -> str:
-        """Convert inline markdown to ReportLab XML tags."""
-        text = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        text = re.sub(r"\*\*\*(.*?)\*\*\*", r"<b><i>\1</i></b>", text)
-        text = re.sub(r"\*\*(.*?)\*\*",     r"<b>\1</b>",         text)
-        text = re.sub(r"\*(.*?)\*",          r"<i>\1</i>",         text)
-        text = re.sub(r"_(.*?)_",            r"<i>\1</i>",         text)
-        text = re.sub(
-            r"`(.*?)`",
-            r'<font name="Courier" color="#dc2626" backColor="#f1f5f9">\1</font>',
-            text,
-        )
-        text = re.sub(r"~~(.*?)~~", r"<strike>\1</strike>", text)
-        return text
-
-    def _parse_table(self, lines: list):
-        """Parse GFM pipe-table lines into a ReportLab Table flowable."""
-        def split_row(line):
-            return [c.strip() for c in line.strip().strip("|").split("|")]
-
-        rows = []
-        for line in lines:
-            if re.match(r"^[\|\s\-:]+$", line):
-                continue
-            rows.append(split_row(line))
-
-        if not rows:
-            return None
-
-        data = []
-        for r_idx, row in enumerate(rows):
-            style = self.styles["H3"] if r_idx == 0 else self.styles["Normal"]
-            data.append([Paragraph(self._inline(c), style) for c in row])
-
-        col_count = max(len(r) for r in data)
-        for row in data:
-            while len(row) < col_count:
-                row.append(Paragraph("", self.styles["Normal"]))
-
-        col_width = (A4[0] - 3 * cm) / col_count
-        tbl = Table(data, colWidths=[col_width] * col_count, repeatRows=1)
-        tbl.setStyle(TableStyle([
-            ("BACKGROUND",     (0, 0), (-1, 0),  BLUE_DARK),
-            ("TEXTCOLOR",      (0, 0), (-1, 0),  WHITE),
-            ("FONTNAME",       (0, 0), (-1, 0),  "Helvetica-Bold"),
-            ("FONTSIZE",       (0, 0), (-1, 0),  10),
-            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [WHITE, BG_ROW_ALT]),
-            ("GRID",           (0, 0), (-1, -1), 0.5, GREY_BORDER),
-            ("TOPPADDING",     (0, 0), (-1, -1), 6),
-            ("BOTTOMPADDING",  (0, 0), (-1, -1), 6),
-            ("LEFTPADDING",    (0, 0), (-1, -1), 8),
-            ("RIGHTPADDING",   (0, 0), (-1, -1), 8),
-            ("VALIGN",         (0, 0), (-1, -1), "TOP"),
-        ]))
-        return tbl
-
-
-# ---------------------------------------------------------------------------
-# Footer canvas callback
-# ---------------------------------------------------------------------------
-
-def _footer_canvas(canvas, doc):
-    """Draw footer and page number on every page."""
-    canvas.saveState()
-    canvas.setFont("Helvetica", 8)
-    canvas.setFillColor(GREY_LIGHT)
-    footer_y = 1 * cm
-    canvas.drawCentredString(
-        A4[0] / 2, footer_y + 12,
-        f"Generated on {datetime.now().strftime('%B %d, %Y at %I:%M %p')}",
-    )
-    canvas.drawCentredString(
-        A4[0] / 2, footer_y,
-        "Contract Review Agent - Confidential",
-    )
-    canvas.drawRightString(
-        A4[0] - 1.5 * cm, A4[1] - 1 * cm,
-        f"Page {doc.page}",
-    )
-    canvas.restoreState()
-
-
-# ---------------------------------------------------------------------------
-# Main class  (same public API as the original WeasyPrint version)
-# ---------------------------------------------------------------------------
 
 class PDFGenerator:
     """
     Generates professional PDF reports from markdown.
-    Uses ReportLab for high-quality PDF rendering with custom styling.
+    Pipeline: markdown → HTML (pandoc) → PDF (wkhtmltopdf).
+    No Python PDF libraries or GUI system dependencies required.
     """
 
     def __init__(self):
-        self._styles = _build_styles() if REPORTLAB_AVAILABLE else None
+        pass
 
     def markdown_to_pdf(self, markdown_path: Path, output_path: Path = None) -> Path:
         """
@@ -396,15 +129,16 @@ class PDFGenerator:
 
         Args:
             markdown_path: Path to the markdown file
-            output_path:   Optional output path. If None, uses same name with .pdf extension
+            output_path:   Optional output path. Defaults to same name with .pdf extension
 
         Returns:
             Path to the generated PDF
         """
-        if not REPORTLAB_AVAILABLE:
-            raise ImportError(
-                "ReportLab is required for PDF generation. "
-                "Install it with: pip install reportlab"
+        if not PANDOC_AVAILABLE:
+            raise RuntimeError(
+                "pandoc and wkhtmltopdf are both required.\n"
+                "  pandoc:      https://pandoc.org/installing.html\n"
+                "  wkhtmltopdf: https://wkhtmltopdf.org/downloads.html"
             )
 
         if not markdown_path.exists():
@@ -414,30 +148,59 @@ class PDFGenerator:
             output_path = markdown_path.with_suffix(".pdf")
 
         logger.info(f"Converting {markdown_path.name} to PDF...")
-        markdown_content = markdown_path.read_text(encoding="utf-8")
-        self._generate_pdf(markdown_content, output_path)
+        self._generate_pdf(markdown_path, output_path)
         logger.success(f"PDF generated: {output_path}")
         return output_path
 
-    def _generate_pdf(self, markdown_text: str, output_path: Path):
-        """Generate PDF from markdown text using ReportLab."""
+    def _generate_pdf(self, md_path: Path, pdf_path: Path):
+        """Convert markdown → HTML → PDF via pandoc + wkhtmltopdf."""
         try:
-            doc = SimpleDocTemplate(
-                str(output_path),
-                pagesize=A4,
-                leftMargin=1.5 * cm,
-                rightMargin=1.5 * cm,
-                topMargin=2 * cm,
-                bottomMargin=2.5 * cm,
-                title="Contract Review Report",
-                author="Contract Review Agent",
+            # Step 1: pandoc converts markdown to an HTML fragment
+            result = subprocess.run(
+                ["pandoc", str(md_path), "-t", "html", "--no-highlight"],
+                capture_output=True, text=True, check=True,
             )
-            parser = _MarkdownParser(self._styles)
-            flowables = parser.parse(markdown_text)
-            doc.build(flowables, onFirstPage=_footer_canvas, onLaterPages=_footer_canvas)
+            body_html = result.stdout
 
+            # Step 2: wrap in our styled full HTML document
+            generated_at = datetime.now().strftime("%B %d, %Y at %I:%M %p")
+            title = md_path.stem.replace("_", " ").replace("-", " ").title()
+            full_html = _build_html(body_html, title, generated_at)
+
+            # Step 3: write HTML to a temp file, then wkhtmltopdf → PDF
+            with tempfile.NamedTemporaryFile(
+                suffix=".html", delete=False, mode="w", encoding="utf-8"
+            ) as tmp:
+                tmp.write(full_html)
+                tmp_path = Path(tmp.name)
+
+            try:
+                result = subprocess.run(
+                    [
+                        "wkhtmltopdf",
+                        "--page-size", "A4",
+                        "--margin-top",    "20",
+                        "--margin-bottom", "20",
+                        "--margin-left",   "15",
+                        "--margin-right",  "15",
+                        "--encoding",      "UTF-8",
+                        "--quiet",
+                        str(tmp_path),
+                        str(pdf_path),
+                    ],
+                    capture_output=True, text=True,
+                )
+                if result.returncode != 0:
+                    raise RuntimeError(result.stderr.strip())
+            finally:
+                tmp_path.unlink(missing_ok=True)
+
+        except subprocess.CalledProcessError as e:
+            err = e.stderr.strip() if e.stderr else str(e)
+            logger.error(f"PDF generation error: {err}")
+            raise RuntimeError(f"PDF generation failed: {err}") from e
         except Exception as e:
-            logger.error(f"PDF generation failed: {e}")
+            logger.error(f"PDF generation error: {e}")
             raise
 
     def batch_convert(self, markdown_dir: Path, output_dir: Path = None) -> list[Path]:
@@ -446,7 +209,7 @@ class PDFGenerator:
 
         Args:
             markdown_dir: Directory containing markdown files
-            output_dir:   Optional output directory. If None, uses same directory
+            output_dir:   Optional output directory. Defaults to same directory
 
         Returns:
             List of generated PDF paths
