@@ -1,271 +1,11 @@
-# """
-# prompts/review_prompts.py — All LLM prompts for contract review.
-
-# Design principles:
-# - System prompts define the agent's persona and rules
-# - Task prompts are concise and structured
-# - Output format is always specified explicitly (for reliable parsing)
-# - Low temperature tasks use strict format enforcement
-
-# Phase 2 improvements:
-# - Issues now require EVIDENCE: exact quote from clause text
-# - Redlines now require precise REPLACE → WITH format
-# - Classifier prompt strengthened with explicit type definitions
-# """
-
-# # ------------------------------------------------------------------
-# # System Prompts
-# # ------------------------------------------------------------------
-
-# SYSTEM_CONTRACT_REVIEWER = """You are an expert contract lawyer and legal analyst with 20+ years of experience reviewing commercial contracts.
-
-# Your role is to:
-# - Identify genuine legal risks in contract clauses with precision
-# - Cite the EXACT clause text that creates each risk (evidence-based review)
-# - Suggest precise surgical redlines OR propose new clauses where text is missing entirely
-# - Give clear, consistent risk ratings
-
-# Rules you always follow:
-
-# WHAT TO REVIEW:
-# - Only review substantive legal obligations: rights, duties, liabilities, IP, payment, term, termination, confidentiality, indemnification, governing law.
-# - Do NOT review: signature blocks, execution pages, witness lines, company addresses, CIN numbers, websites, email addresses, phone numbers, or any other administrative/boilerplate contact details. These are not legal provisions and carry zero legal risk.
-# - Do NOT raise issues about "missing phone numbers", "address formatting", or "insufficient contact information" — these are never legal risks.
-# - Do NOT flag jurisdictional issues based solely on a registered office address — an address is not a jurisdiction clause.
-
-# RISK RATINGS:
-# - HIGH       = could cause significant financial or legal harm if signed as-is
-# - MEDIUM     = needs negotiation before signing
-# - LOW        = minor issue, worth flagging but not a blocker
-# - ACCEPTABLE = clause is balanced and fair, no changes needed
-
-# ISSUES:
-# - Every issue MUST have EVIDENCE: exact verbatim text from the clause that proves the problem.
-# - If you cannot find exact supporting text in the clause, do NOT raise the issue.
-# - Be specific. Generic issues like "unclear" or "broad" without quoting the exact language are not acceptable.
-
-# REDLINES vs NEW_CLAUSE — use the right tool:
-# - REDLINE: the problematic language EXISTS in the clause. REPLACE is verbatim text from the clause, WITH is a concrete market-standard fix.
-#   - WITH must use specific terms: "30 days written notice", "12 months of fees paid", a named jurisdiction — not vague phrases like "reasonable" or "applicable law".
-#   - When a value is unknown (a number, name, date, amount), write [PLACEHOLDER] — NEVER invent a fake value.
-#   - REPLACE and WITH must be genuinely different. If your WITH would contain the same text as REPLACE plus a small addition, use NEW_CLAUSE instead.
-# - NEW_CLAUSE: the contract is MISSING an obligation entirely — nothing to redline because it doesn't exist yet.
-#   Use this when: there is no notice period, no liability cap, no termination right, no governing law clause.
-#   Write a complete, ready-to-insert clause. Use [PLACEHOLDER] for any values to be filled in.
-# """
-
-# SYSTEM_METADATA_EXTRACTOR = """You are a contract metadata extraction specialist.
-# Your job is to extract structured data from contract text with high accuracy.
-# Always respond in the exact JSON format requested. Nothing else."""
-
-# SYSTEM_CLAUSE_CLASSIFIER = """You are a contract clause classification specialist.
-# Your job is to classify a clause into exactly one legal category.
-
-# Category definitions (use these precisely):
-# - term_termination   : Duration of the agreement, renewal terms, termination rights and procedures
-# - notices            : How legal notices must be sent (method, address, timing, acknowledgment)
-# - confidentiality    : Obligations to protect non-public information, NDA provisions
-# - limitation_of_liability : Caps on damages, exclusions of liability types
-# - indemnification    : One party defending/compensating the other for claims
-# - intellectual_property : Ownership, assignment, licensing of IP and work product  
-# - payment            : Fees, invoicing, payment terms, late payment
-# - warranties         : Representations about quality, fitness, title, non-infringement
-# - dispute_resolution : Arbitration, mediation, governing law, jurisdiction, litigation
-# - definitions        : Defined terms and their meanings
-# - assignment         : Transfer of rights or obligations to third parties
-# - force_majeure      : Excused performance due to unforeseeable events
-# - non_compete        : Restrictions on competition or solicitation
-# - data_privacy       : Personal data handling, GDPR, data protection obligations
-# - entire_agreement   : Integration/merger clause, superseding prior agreements
-# - amendment          : How the contract can be modified
-# - general            : Miscellaneous provisions not fitting above categories
-
-# Respond in this exact format:
-# CATEGORY: <category>
-# REASON: <one sentence citing specific words from the clause that justify this category>"""
-
-
-# # ------------------------------------------------------------------
-# # Task Prompts
-# # ------------------------------------------------------------------
-
-# def prompt_extract_metadata(contract_text: str) -> str:
-#     """Extract key contract metadata from the full text."""
-#     preview = contract_text[:3000]
-#     return f"""Extract the following metadata from this contract.
-# Return ONLY valid JSON, no explanation, no markdown.
-
-# Contract text (first section):
-# {preview}
-
-# Required JSON format:
-# {{
-#   "contract_type": "NDA | MSA | SOW | Employment | License | Other",
-#   "parties": ["Party 1 name", "Party 2 name"],
-#   "effective_date": "YYYY-MM-DD or null",
-#   "expiration_date": "YYYY-MM-DD or null",
-#   "governing_law": "State/Country or null",
-#   "contract_value": "dollar amount or null",
-#   "auto_renewal": true | false | null,
-#   "notice_period_days": number or null
-# }}"""
-
-
-# def prompt_classify_clause(clause_text: str, clause_heading: str = "") -> str:
-#     """
-#     Classify a single clause into a legal category.
-#     Uses heading as strong prior signal before reading body text.
-#     """
-#     heading_hint = f"Clause heading: {clause_heading}\n" if clause_heading else ""
-#     return f"""{heading_hint}Clause text:
-# {clause_text[:600]}
-
-# Classify this clause into exactly one category. Use the heading as the primary
-# signal — if the heading clearly matches a category, that takes priority over body text.
-
-# CATEGORY: <one of the categories from your instructions>
-# REASON: <cite specific words from the heading or clause that justify this>"""
-
-
-# def prompt_review_clause(
-#     clause_text: str,
-#     clause_type: str,
-#     clause_heading: str = "",
-#     playbook_context: str = "",
-# ) -> str:
-#     """
-#     Full risk review of a single clause.
-#     Now requires evidence quotes and precise replace→with redlines.
-#     playbook_context: relevant playbook rules retrieved from knowledge base.
-#     """
-#     heading = f"**{clause_heading}**\n" if clause_heading else ""
-#     playbook_section = ""
-#     if playbook_context:
-#         playbook_section = f"""
-# Our company's playbook for {clause_type} clauses:
-# {playbook_context}
-# ---
-# """
-
-#     return f"""Review this {clause_type} clause for legal risks.
-# {playbook_section}
-# Clause to review:
-# {heading}{clause_text}
-
-# Provide your review in this EXACT format. Do not deviate from it.
-
-# RISK_LEVEL: HIGH | MEDIUM | LOW | ACCEPTABLE
-
-# ISSUES:
-# - ISSUE: [Name the specific legal problem — substantive legal risks only, not administrative details]
-#   EVIDENCE: "[Exact verbatim quote from the clause text above that proves the problem]"
-#   IMPACT: [One sentence: concrete legal or financial consequence if signed as-is]
-# (Repeat for each genuine legal issue. Write "None" if no real issues exist.)
-# Rules:
-# - Only raise issues with exact verbatim evidence from the clause text above.
-# - Do NOT raise issues about addresses, phone numbers, emails, CIN numbers, website URLs.
-# - Do NOT flag "jurisdiction" or "contact information" issues — these are not legal risks.
-
-# REDLINE:
-# REPLACE: "[verbatim text from the clause to change]"
-# WITH: "[specific market-standard fix — use [PLACEHOLDER] for any unknown values like amounts, names, dates, phone numbers — NEVER invent fake specific values]"
-# (One REPLACE/WITH pair per issue where the fix is changing existing language.)
-# (Write "No changes needed" if ACCEPTABLE, or if all fixes require a new clause.)
-# Rules:
-# - REPLACE must be verbatim from the clause above.
-# - WITH must be substantively different from REPLACE — adding words to the end of unchanged text is NOT a redline, use NEW_CLAUSE instead.
-# - Never invent specific values. Use [PLACEHOLDER] for any unknown number, name, date, or contact detail.
-
-# NEW_CLAUSE:
-# TITLE: "[Short clause title, e.g. 'Termination Notice Period']"
-# REASON: "[One sentence: what obligation is missing and the risk it creates]"
-# TEXT: "[Complete, ready-to-insert clause text using [PLACEHOLDER] for values to be filled in]"
-# (Use NEW_CLAUSE when an obligation is entirely absent — there is no existing text to redline.
-#  Write "None" here if no new clause is needed.)
-
-# REASONING:
-# [2-3 sentences on overall assessment and the priority order of changes needed.]"""
-
-
-# def prompt_contract_summary(
-#     clauses_reviewed: list[dict],
-#     metadata: dict,
-# ) -> str:
-#     """Generate an executive summary after all clauses are reviewed."""
-#     high_risk = [c for c in clauses_reviewed if c.get("risk_level") == "HIGH"]
-#     medium_risk = [c for c in clauses_reviewed if c.get("risk_level") == "MEDIUM"]
-
-#     high_risk_text = "\n".join(
-#         f"- {c.get('heading', 'Unnamed clause')}: {c.get('issues', '')[:200]}"
-#         for c in high_risk[:5]
-#     ) or "None"
-
-#     medium_risk_text = "\n".join(
-#         f"- {c.get('heading', 'Unnamed clause')}: {c.get('issues', '')[:150]}"
-#         for c in medium_risk[:5]
-#     ) or "None"
-
-#     return f"""Generate an executive summary for this contract review.
-
-# Contract: {metadata.get('contract_type', 'Unknown')}
-# Parties: {', '.join(metadata.get('parties', ['Unknown']))}
-# Governing Law: {metadata.get('governing_law', 'Unknown')}
-# Total Clauses Reviewed: {len(clauses_reviewed)}
-# High Risk Issues: {len(high_risk)}
-# Medium Risk Issues: {len(medium_risk)}
-
-# Top HIGH risk clauses:
-# {high_risk_text}
-
-# Top MEDIUM risk clauses:
-# {medium_risk_text}
-
-# Write a concise executive summary (3-4 paragraphs) covering:
-# 1. Overall contract risk assessment
-# 2. Most critical issues requiring attention before signing
-# 3. Key negotiation priorities
-# 4. Recommendation (Sign as-is | Negotiate before signing | Do not sign)"""
-
-
-# def prompt_draft_clause(
-#     clause_type: str,
-#     party_a: str,
-#     party_b: str,
-#     context: str = "",
-#     template_context: str = "",
-# ) -> str:
-#     """Draft a new clause from scratch or based on a template."""
-#     template_section = f"\nBase this on our standard template:\n{template_context}\n" if template_context else ""
-#     context_section = f"\nDeal context: {context}\n" if context else ""
-
-#     return f"""Draft a standard {clause_type} clause for a commercial contract.
-
-# Parties:
-# - Party A (our company): {party_a}
-# - Party B (counterparty): {party_b}
-# {context_section}{template_section}
-# Requirements:
-# - Use clear, professional legal language
-# - Be fair but protective of Party A's interests
-# - Include all standard sub-provisions for this clause type
-# - Mark any blanks that need to be filled with [PLACEHOLDER]
-
-# Draft the clause now:"""
-
-
 """
 prompts/review_prompts.py — All LLM prompts for contract review.
 
-Design principles:
-- System prompts define the agent's persona and rules
+Design:
+- System prompts define the agent's persona and hard rules
 - Task prompts are concise and structured
-- Output format is always specified explicitly (for reliable parsing)
-- Low temperature tasks use strict format enforcement
-
-Phase 2 improvements:
-- Issues now require EVIDENCE: exact quote from clause text
-- Redlines now require precise REPLACE → WITH format
-- Classifier prompt strengthened with explicit type definitions
+- Output format is always specified explicitly
+- Two-pass review: Pass 1 extracts evidence quotes, Pass 2 does full analysis
 """
 
 # ------------------------------------------------------------------
@@ -280,40 +20,63 @@ Your role is to:
 - Suggest precise surgical redlines OR propose new clauses where text is missing entirely
 - Give clear, consistent risk ratings
 
-Rules you always follow:
+═══════════════════════════════════════════════
+CRITICAL RULE: READ THE ENTIRE CLAUSE FIRST
+═══════════════════════════════════════════════
+Before forming any opinion:
+1. Read the ENTIRE clause from start to finish.
+2. If a clause imposes an obligation on Party A, check whether the SAME clause or an
+   adjacent sentence ALREADY imposes a corresponding obligation on Party B — before
+   flagging imbalance.
+3. If a clause already contains a cure period, cooperation duty, or notice requirement,
+   do NOT flag those as missing. Only flag what is genuinely absent.
+4. Check whether defined terms (e.g. COMMISSION, CONSULTANT) are defined in the preamble
+   or recitals. If so, they are NOT ambiguous — do not raise them as issues.
 
 WHAT TO REVIEW:
-- Only review substantive legal obligations: rights, duties, liabilities, IP, payment, term, termination, confidentiality, indemnification, governing law.
-- Do NOT review: signature blocks, execution pages, witness lines, company addresses, CIN numbers, websites, email addresses, phone numbers, or any other administrative/boilerplate contact details.
-- Do NOT raise issues about "missing phone numbers", "address formatting", or "insufficient contact information".
+- Substantive legal obligations only: rights, duties, liabilities, IP, payment, term,
+  termination, confidentiality, indemnification, governing law.
+- Do NOT review: signature blocks, execution pages, witness lines, addresses, CIN numbers,
+  websites, email addresses, phone numbers, administrative boilerplate, contact details.
+- Do NOT raise issues about "missing phone numbers", "address formatting", or
+  "insufficient contact information" — these are NEVER legal risks.
 - Do NOT flag jurisdictional issues based solely on a registered office address.
-- IGNORE placeholder text like "(Insert standard clause)" or "(If needed, include...)" - these are templates, not actual obligations.
+- IGNORE placeholder text like "(Insert standard clause)" — it's a template, not actual text.
+
+STANDARD LEGAL LANGUAGE — NEVER flag these as HIGH risk:
+- "reasonably satisfactory" — standard California objective legal standard (reasonable
+  person test). This is NOT subjective or one-sided. Do NOT rate it HIGH.
+- "reasonable efforts" / "commercially reasonable efforts" — industry standard.
+- "material breach" — standard termination trigger, not vague.
+- "COMMISSION" or "CONSULTANT" or similar ALL-CAPS defined terms — check the preamble.
+  If defined there, they are unambiguous. Do not flag as confusing.
 
 RISK RATINGS:
-- HIGH       = could cause significant financial or legal harm if signed as-is (e.g., unlimited liability, perpetual obligations, one-sided terms)
-- MEDIUM     = needs negotiation before signing (e.g., unclear terms, missing protections, imbalanced provisions)
-- LOW        = minor issue, worth flagging but not a blocker (e.g., missing notice period, vague language)
+- HIGH       = significant financial or legal harm if signed as-is
+                (unlimited liability, perpetual obligations, one-sided terms with no remedy,
+                 missing payment terms, unilateral IP assignment, immediate termination
+                 rights with no cure, indemnification covering third parties without limit)
+- MEDIUM     = needs negotiation before signing
+                (unclear terms, missing protections, imbalanced provisions, short cure periods)
+- LOW        = minor issue, not a blocker
+                (vague language, minor administrative gap, non-critical missing detail)
 - ACCEPTABLE = clause is balanced and fair, no changes needed
 
-ISSUES - BE SPECIFIC AND EVIDENCE-BASED:
+ISSUES — EVIDENCE IS MANDATORY:
 - Every issue MUST have EVIDENCE: exact verbatim text from the clause that proves the problem.
 - If you cannot find exact supporting text in the clause, do NOT raise the issue.
-- Be specific. Generic issues like "unclear" or "broad" without quoting the exact language are not acceptable.
-- Focus on REAL risks, not theoretical ones. If the clause says "(Insert standard clause)", that's a placeholder - don't review it as if it's actual text.
+- For "missing obligation" issues: quote the surrounding text that PROVES the gap.
+  Example: quoting "Total payment is not to exceed $_____" proves no milestone schedule exists.
+- Generic issues like "unclear" or "broad" without quoting exact language are NOT acceptable.
+- It is better to raise 2 real HIGH issues than 8 theoretical ones.
 
 REDLINES vs NEW_CLAUSE — use the right tool:
-- REDLINE: the problematic language EXISTS in the clause. REPLACE is verbatim text from the clause, WITH is a concrete market-standard fix.
-  - WITH must use specific terms: "30 days written notice", "12 months of fees paid", a named jurisdiction — not vague phrases like "reasonable" or "applicable law".
-  - When a value is unknown (a number, name, date, amount), write [PLACEHOLDER] — NEVER invent a fake value.
-  - REPLACE and WITH must be genuinely different. If your WITH would contain the same text as REPLACE plus a small addition, use NEW_CLAUSE instead.
-- NEW_CLAUSE: the contract is MISSING an obligation entirely — nothing to redline because it doesn't exist yet.
-  Use this when: there is no notice period, no liability cap, no termination right, no governing law clause.
-  Write a complete, ready-to-insert clause. Use [PLACEHOLDER] for any values to be filled in.
-
-QUALITY OVER QUANTITY:
-- It's better to identify 2-3 real HIGH risk issues than to list 10 minor theoretical concerns.
-- If a clause is acceptable, say so. Don't invent problems.
-- Focus on what matters: money, liability, IP, termination rights, confidentiality scope.
+- REDLINE: the problematic language EXISTS. REPLACE is verbatim from the clause. WITH is the fix.
+  - WITH must be specific: "30 days written notice", "12 months fees paid", named jurisdiction.
+  - Use [PLACEHOLDER] for unknown values. NEVER invent a fake value.
+  - REPLACE and WITH must be genuinely different — not just adding words to the end.
+- NEW_CLAUSE: an obligation is ENTIRELY ABSENT — nothing to redline because it doesn't exist.
+  Write a complete, ready-to-insert clause. Use [PLACEHOLDER] for all unknown values.
 """
 
 SYSTEM_METADATA_EXTRACTOR = """You are a contract metadata extraction specialist.
@@ -329,7 +92,7 @@ Category definitions (use these precisely):
 - confidentiality    : Obligations to protect non-public information, NDA provisions
 - limitation_of_liability : Caps on damages, exclusions of liability types
 - indemnification    : One party defending/compensating the other for claims
-- intellectual_property : Ownership, assignment, licensing of IP and work product  
+- intellectual_property : Ownership, assignment, licensing of IP and work product
 - payment            : Fees, invoicing, payment terms, late payment
 - warranties         : Representations about quality, fitness, title, non-infringement
 - dispute_resolution : Arbitration, mediation, governing law, jurisdiction, litigation
@@ -340,6 +103,7 @@ Category definitions (use these precisely):
 - data_privacy       : Personal data handling, GDPR, data protection obligations
 - entire_agreement   : Integration/merger clause, superseding prior agreements
 - amendment          : How the contract can be modified
+- code_of_conduct    : Harassment, equal employment, ethics, compliance policies
 - general            : Miscellaneous provisions not fitting above categories
 
 Respond in this exact format:
@@ -352,18 +116,24 @@ REASON: <one sentence citing specific words from the clause that justify this ca
 # ------------------------------------------------------------------
 
 def prompt_extract_metadata(contract_text: str) -> str:
-    """Extract key contract metadata from the full text."""
-    preview = contract_text[:3000]
+    """Extract key contract metadata from the full text.
+    Sends up to 8000 chars so governing_law (often in final sections) is captured.
+    """
+    preview = contract_text[:8000]
     return f"""Extract the following metadata from this contract.
 Return ONLY valid JSON, no explanation, no markdown.
 
-Contract text (first section):
+IMPORTANT: governing_law often appears LATE in the contract
+(look for "laws of the State of X", "governed by X law", "construed under").
+Search the full text below carefully.
+
+Contract text:
 {preview}
 
 Required JSON format:
 {{
-  "contract_type": "NDA | MSA | SOW | Employment | License | Other",
-  "parties": ["Party 1 name", "Party 2 name"],
+  "contract_type": "Professional Services | NDA | MSA | SOW | Employment | License | Other",
+  "parties": ["Party 1 full name", "Party 2 full name"],
   "effective_date": "YYYY-MM-DD or null",
   "expiration_date": "YYYY-MM-DD or null",
   "governing_law": "State/Country or null",
@@ -374,10 +144,7 @@ Required JSON format:
 
 
 def prompt_classify_clause(clause_text: str, clause_heading: str = "") -> str:
-    """
-    Classify a single clause into a legal category.
-    Uses heading as strong prior signal before reading body text.
-    """
+    """Classify a single clause into a legal category."""
     heading_hint = f"Clause heading: {clause_heading}\n" if clause_heading else ""
     return f"""{heading_hint}Clause text:
 {clause_text[:600]}
@@ -389,6 +156,31 @@ CATEGORY: <one of the categories from your instructions>
 REASON: <cite specific words from the heading or clause that justify this>"""
 
 
+def prompt_extract_evidence(clause_text: str, clause_type: str) -> str:
+    """
+    Pass 1: Extract verbatim quotes that could be evidence of legal risk.
+    Simple, low-temperature task. Output anchors Pass 2.
+    """
+    return f"""Read this {clause_type} clause and list any verbatim phrases that represent
+a genuine legal risk: one-sided obligations, missing caps, perpetual terms, unlimited liability,
+absent cure periods, broad IP assignments, uncapped indemnification, etc.
+
+Clause text:
+{clause_text}
+
+List ONLY exact quotes — copy them word-for-word from the text above.
+If you cannot find risky language, write "None".
+
+Format (one per line):
+QUOTE: "[exact text from clause]"
+QUOTE: "[exact text from clause]"
+
+Rules:
+- Quotes must be verbatim substrings of the clause text above.
+- Do not paraphrase or summarise — copy exact words only.
+- Standard phrases like "reasonably satisfactory", "reasonable efforts" are NOT risks."""
+
+
 def prompt_review_clause(
     clause_text: str,
     clause_type: str,
@@ -397,11 +189,10 @@ def prompt_review_clause(
     verified_quotes: list = None,
 ) -> str:
     """
-    Full risk review of a single clause (Pass 2).
-    verified_quotes: pre-extracted verbatim quotes from Pass 1 (already confirmed in text).
-    playbook_context: relevant playbook rules retrieved from knowledge base.
+    Pass 2: Full risk review anchored to pre-verified evidence quotes.
     """
     heading = f"**{clause_heading}**\n" if clause_heading else ""
+
     playbook_section = ""
     if playbook_context:
         playbook_section = f"""
@@ -415,8 +206,8 @@ Our company's playbook for {clause_type} clauses:
         quote_lines = "\n".join(f'  - "{q}"' for q in verified_quotes if q)
         if quote_lines:
             quotes_section = f"""
-The following phrases were pre-identified as verbatim text from this clause.
-Where relevant, USE THESE as your EVIDENCE quotes — they are confirmed real:
+The following phrases were pre-verified as verbatim text from this clause.
+Use these as EVIDENCE quotes where relevant — they are confirmed real:
 {quote_lines}
 ---
 """
@@ -426,100 +217,88 @@ Where relevant, USE THESE as your EVIDENCE quotes — they are confirmed real:
 Clause to review:
 {heading}{clause_text}
 
-Provide your review in this EXACT format. Do not deviate from it.
+Provide your review in this EXACT format. Do not deviate.
 
 RISK_LEVEL: HIGH | MEDIUM | LOW | ACCEPTABLE
 
 ISSUES:
-- ISSUE: [Name the specific legal problem — substantive legal risks only, not administrative details]
+- ISSUE: [Name the specific legal problem — substantive risks only]
   EVIDENCE: "[Exact verbatim quote from the clause text above that proves the problem]"
   IMPACT: [One sentence: concrete legal or financial consequence if signed as-is]
-(Repeat for each genuine legal issue. Write "None" if no real issues exist.)
+(Repeat for each genuine issue. Write "None" if no real issues exist.)
 Rules:
-- Only raise issues with exact verbatim evidence from the clause text above.
-- Do NOT raise issues about addresses, phone numbers, emails, CIN numbers, website URLs.
-- Do NOT flag "jurisdiction" or "contact information" issues — these are not legal risks.
+- Every issue requires EVIDENCE that is verbatim from the clause above.
+- Do NOT raise issues about addresses, phone numbers, emails, CIN numbers, URLs.
+- Do NOT flag "reasonably satisfactory" as a risk — it is standard legal language.
+- Do NOT flag defined terms (COMMISSION, CONSULTANT) as ambiguous if defined elsewhere.
+- Read the FULL clause before deciding — do not stop at the first sentence.
 
 REDLINE:
 REPLACE: "[verbatim text from the clause to change]"
-WITH: "[specific market-standard fix — use [PLACEHOLDER] for any unknown values like amounts, names, dates, phone numbers — NEVER invent fake specific values]"
-(One REPLACE/WITH pair per issue where the fix is changing existing language.)
-(Write "No changes needed" if ACCEPTABLE, or if all fixes require a new clause.)
+WITH: "[specific market-standard fix — use [PLACEHOLDER] for unknown values, NEVER invent values]"
+(One REPLACE/WITH pair per issue where fix is changing existing language.)
+(Write "No changes needed" if ACCEPTABLE or all fixes require a new clause.)
 Rules:
 - REPLACE must be verbatim from the clause above.
-- WITH must be substantively different from REPLACE — adding words to the end of unchanged text is NOT a redline, use NEW_CLAUSE instead.
-- Never invent specific values. Use [PLACEHOLDER] for any unknown number, name, date, or contact detail.
+- WITH must be substantively different from REPLACE.
+- Never invent specific values. Use [PLACEHOLDER] for any unknown number, name, or date.
 
 NEW_CLAUSE:
-TITLE: "[Short clause title, e.g. 'Termination Notice Period']"
+TITLE: "[Short clause title]"
 REASON: "[One sentence: what obligation is missing and the risk it creates]"
-TEXT: "[Complete, ready-to-insert clause text using [PLACEHOLDER] for values to be filled in]"
-(Use NEW_CLAUSE when an obligation is entirely absent — there is no existing text to redline.
- Write "None" here if no new clause is needed.)
+TEXT: "[Complete, ready-to-insert clause text using [PLACEHOLDER] for values to fill in]"
+(Use NEW_CLAUSE only when an obligation is ENTIRELY ABSENT — nothing to redline.)
+(Write "None" if no new clause is needed.)
 
 REASONING:
-[2-3 sentences on overall assessment and the priority order of changes needed.]"""
-
-
-def prompt_extract_evidence(clause_text: str, clause_type: str) -> str:
-    """
-    Pass 1 prompt: ask the model ONLY to extract verbatim quotes that
-    would constitute evidence of legal risk. Much simpler task than full review.
-    Low temperature, short output. Used to anchor Pass 2.
-    """
-    return f"""Read this {clause_type} clause and list any verbatim phrases that could
-represent a legal risk (one-sided obligations, missing caps, perpetual terms, etc.).
-
-Clause text:
-{clause_text}
-
-List only exact quotes — copy them word-for-word from the text above.
-If you cannot find any risky language, write "None".
-
-Format:
-QUOTE: "[exact text from clause]"
-QUOTE: "[exact text from clause]"
-(One QUOTE per line. Only text that literally appears above.)"""
+[2-3 sentences: overall assessment and priority order of changes needed.]"""
 
 
 def prompt_contract_summary(
     clauses_reviewed: list[dict],
     metadata: dict,
 ) -> str:
-    """Generate an executive summary after all clauses are reviewed."""
-    high_risk = [c for c in clauses_reviewed if c.get("risk_level") == "HIGH"]
+    """Generate an executive summary. Passes redline context so priorities match actual fixes."""
+    high_risk   = [c for c in clauses_reviewed if c.get("risk_level") == "HIGH"]
     medium_risk = [c for c in clauses_reviewed if c.get("risk_level") == "MEDIUM"]
 
-    high_risk_text = "\n".join(
-        f"- {c.get('heading', 'Unnamed clause')}: {c.get('issues', '')[:200]}"
-        for c in high_risk[:5]
-    ) or "None"
+    def _clause_line(c, include_fix=True):
+        heading  = c.get("heading", "Unnamed clause")
+        issues   = c.get("issues", "")[:180]
+        line = f"- {heading}: {issues}"
+        if include_fix:
+            redlines = c.get("redlines", [])
+            if redlines:
+                rd = redlines[0]
+                r = rd.get("replace", "")[:60]
+                w = rd.get("with", "")[:60]
+                if r and w:
+                    line += f'\n  → Fix: replace "{r}" with "{w}"'
+        return line
 
-    medium_risk_text = "\n".join(
-        f"- {c.get('heading', 'Unnamed clause')}: {c.get('issues', '')[:150]}"
-        for c in medium_risk[:5]
-    ) or "None"
+    high_text   = "\n".join(_clause_line(c) for c in high_risk[:6])   or "None"
+    medium_text = "\n".join(_clause_line(c, False) for c in medium_risk[:4]) or "None"
 
     return f"""Generate an executive summary for this contract review.
 
-Contract: {metadata.get('contract_type', 'Unknown')}
-Parties: {', '.join(metadata.get('parties', ['Unknown']))}
-Governing Law: {metadata.get('governing_law', 'Unknown')}
+Contract: {metadata.get("contract_type", "Unknown")}
+Parties: {", ".join(metadata.get("parties", ["Unknown"]))}
+Governing Law: {metadata.get("governing_law", "Unknown")}
 Total Clauses Reviewed: {len(clauses_reviewed)}
-High Risk Issues: {len(high_risk)}
-Medium Risk Issues: {len(medium_risk)}
+High Risk: {len(high_risk)} | Medium Risk: {len(medium_risk)}
 
-Top HIGH risk clauses:
-{high_risk_text}
+Top HIGH risk clauses (with suggested fixes):
+{high_text}
 
 Top MEDIUM risk clauses:
-{medium_risk_text}
+{medium_text}
 
 Write a concise executive summary (3-4 paragraphs) covering:
-1. Overall contract risk assessment
-2. Most critical issues requiring attention before signing
-3. Key negotiation priorities
-4. Recommendation (Sign as-is | Negotiate before signing | Do not sign)"""
+1. Overall contract risk assessment — name the 2-3 most dangerous clauses specifically
+2. Specific negotiation priorities — reference the actual language to change
+3. Recommendation: Sign as-is | Negotiate before signing | Do not sign
+
+Do NOT use generic legal boilerplate. Be direct, specific, and actionable."""
 
 
 def prompt_draft_clause(
@@ -531,7 +310,7 @@ def prompt_draft_clause(
 ) -> str:
     """Draft a new clause from scratch or based on a template."""
     template_section = f"\nBase this on our standard template:\n{template_context}\n" if template_context else ""
-    context_section = f"\nDeal context: {context}\n" if context else ""
+    context_section  = f"\nDeal context: {context}\n" if context else ""
 
     return f"""Draft a standard {clause_type} clause for a commercial contract.
 
