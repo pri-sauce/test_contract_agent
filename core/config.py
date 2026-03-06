@@ -16,13 +16,13 @@ def start_ollama():
     """
     import httpx
     try:
-        httpx.get("http://localhost:11434", timeout=2.0)
+        httpx.get("http://localhost:11434", timeout=6.0)
         return  # already running
     except Exception:
         pass  # not running, start it
 
     env = os.environ.copy()
-    env["OLLAMA_NUM_PARALLEL"]      = "4"
+    env["OLLAMA_NUM_PARALLEL"]      = "2"
     env["OLLAMA_MAX_LOADED_MODELS"] = "1"
 
     subprocess.Popen(
@@ -49,12 +49,12 @@ class Config:
 
     # --- Models ---
     PRIMARY_MODEL:   str = "qwen2.5:7b-instruct-q4_K_M"
-    FAST_MODEL:      str = "qwen2.5:7b-instruct-q4_K_M"
+    FAST_MODEL:      str = "qwen3.5:0.8b"
     EMBEDDING_MODEL: str = "nomic-embed-text"
 
     # --- Parallelism ---
     # Must match OLLAMA_NUM_PARALLEL above
-    PARALLEL_WORKERS: int = 4
+    PARALLEL_WORKERS: int = 2
 
     # --- Two-tier triage ---
     ENABLE_TRIAGE: bool = True

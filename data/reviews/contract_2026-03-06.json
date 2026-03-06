@@ -1,0 +1,495 @@
+{
+  "filename": "contract.pdf",
+  "reviewed_at": "2026-03-06T20:19:34.284987",
+  "overall_risk": "LOW",
+  "recommendation": "Negotiate before signing",
+  "metadata": {
+    "contract_type": "SOW",
+    "parties": [
+      "Party 1 full name",
+      "Party 2 full name"
+    ],
+    "effective_date": null,
+    "expiration_date": null,
+    "governing_law": null,
+    "contract_value": null,
+    "auto_renewal": null,
+    "notice_period_days": null,
+    "timing": {
+      "total_seconds": 2539.12,
+      "parse_seconds": 0.39,
+      "segment_seconds": 0.02,
+      "metadata_seconds": 2347.46,
+      "review_seconds": 2347.46,
+      "summary_seconds": 191.25,
+      "avg_seconds_per_clause": 86.94
+    }
+  },
+  "summary": {
+    "total_clauses": 27,
+    "high_risk": 0,
+    "medium_risk": 0,
+    "low_risk": 27,
+    "acceptable": 0
+  },
+  "executive_summary": "### Overall Risk\nThe contract review of the Statement of Work (SOW) between [Party 1 full name] and [Party 2 full name] did not identify any clauses with HIGH or MEDIUM risk. However, the absence of critical provisions in the contract poses significant potential issues. Specifically, the SOW lacks clear payment terms, indemnification clauses, and a termination clause, which could lead to substantial financial and legal risks if not addressed.\n\n### Negotiation Priorities\nTo mitigate the identified risks, the following clauses need to be negotiated:\n\n1. **Payment Terms**: The SOW should include a detailed payment schedule, including milestones, payment amounts, and due dates. For example, the clause should state: \"Party 1 will make payments to Party 2 in the amount of [PLACEHOLDER] upon the completion of [PLACEHOLDER] milestones, with the final payment due upon [PLACEHOLDER] completion.\"\n\n2. **Indemnification**: A mutual indemnification clause should be added to protect both parties. The clause should read: \"Party 1 and Party 2 agree to indemnify, defend, and hold harmless the other party and its affiliates, officers, directors, employees, and agents from and against any and all claims, damages, losses, liabilities, and expenses (including reasonable attorneys' fees) arising out of or related to the other party's breach of this agreement.\"\n\n3. **Termination Clause**: A clear termination clause is essential to ensure both parties can exit the agreement under specific conditions. The clause should include: \"Either party may terminate this agreement upon [PLACEHOLDER] days written notice. Upon termination, both parties agree to [PLACEHOLDER] obligations.\"\n\n### Recommendation\nGiven the absence of critical provisions, it is recommended that the parties negotiate and include the above clauses before signing the SOW. Failure to do so could result in significant financial and legal risks, making it advisable to ensure all parties are adequately protected.",
+  "clause_reviews": [
+    {
+      "clause_id": "clause_001",
+      "number": "SERVICE AGREEMENT",
+      "heading": "THIS SERVICE AGREEMENT (this \"Agreement\") is made and entered",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 1,
+      "issues": [
+        "** No significant issues as the clause is a standard preamble and does not contain any specific obligations or risks."
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "** No significant issues as the clause is a standard preamble and does not contain any specific obligations or risks.",
+      "original_text": "THIS SERVICE AGREEMENT (this \"Agreement\") is made and entered\ninto as of the [￿] day of [￿], 20[￿] (the \"Effective Date\"), by and between:\n[￿], a company duly organized and existing under the laws of [￿], with its\nregistered oﬀice at [￿] and company registration number [￿] (the \"Service\nProvider\"); and\n[￿], a company duly organized and existing under the laws of [￿], with its regis-\ntered oﬀice at [￿] and company registration number [￿] (the \"Client\").\nEach of the Service Provider and the Client"
+    },
+    {
+      "clause_id": "clause_002",
+      "number": "1",
+      "heading": "PARTIES AND RECITALS",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "1.1 Parties\nThe Parties to this Agreement are the Service Provider and the\nClient, as identified above.\n1.2 Recitals"
+    },
+    {
+      "clause_id": "clause_003",
+      "number": "WHEREAS",
+      "heading": "of providing information technology (\"IT\") support services, including but not",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "of providing information technology (\"IT\") support services, including but not\nlimited to troubleshooting, system maintenance, software updates, network man-\nagement, and related advisory services;"
+    },
+    {
+      "clause_id": "clause_004",
+      "number": "WHEREAS",
+      "heading": "tain IT support services as described herein, and the Service Provider desires",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "tain IT support services as described herein, and the Service Provider desires\nto provide such services to the Client, all upon and subject to the terms and\nconditions set forth in this Agreement;"
+    },
+    {
+      "clause_id": "clause_005",
+      "number": "WHEREAS",
+      "heading": "the provision of such services by the Service Provider to the Client;",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "the provision of such services by the Service Provider to the Client;\nNOW, THEREFORE, in consideration of the mutual covenants and agree-\nments contained herein, and for other good and valuable consideration, the\nreceipt and suﬀiciency of which are hereby acknowledged, the Parties agree as\nfollows:"
+    },
+    {
+      "clause_id": "clause_006",
+      "number": "2",
+      "heading": "DEFINITIONS",
+      "clause_type": "definitions",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "For the purposes of this Agreement, the following terms shall have the meanings\nset forth below:\n2.1 \"Acceptance Criteria\" means the standards and specifications set forth\nin Section 6.2 against which the Deliverables shall be evaluated for acceptance\nby the Client.\n\n2.2 \"Aﬀiliate\" means, with respect to any Person, any other Person that\ndirectly or indirectly, through one or more intermediaries, controls, is controlled\nby, or is under common control with, such Person. For these purposes, \"contr"
+    },
+    {
+      "clause_id": "clause_007",
+      "number": "3",
+      "heading": "SCOPE OF SERVICES",
+      "clause_type": "confidentiality",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "3.1 Description of Services\nThe Service Provider shall provide the following\nIT support services to the Client (the \"Services\"):\n3.1.1 Helpdesk Support: Provision of first-level and second-level technical\nsupport to the Client's employees via telephone, email, and remote access tools,\nincluding troubleshooting hardware and software issues, password resets, and\nuser account management.\n3.1.2 System Maintenance: Regular maintenance of the Client's IT systems,\nincluding but not limited to servers, "
+    },
+    {
+      "clause_id": "clause_008",
+      "number": "1",
+      "heading": "Business Day of",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 3,
+      "issues": [],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "No significant issues",
+      "original_text": "receipt of the Client's request. - Priority 4 (Low): The Service Provider shall\nacknowledge and begin working on the issue within three ("
+    },
+    {
+      "clause_id": "clause_009",
+      "number": "3",
+      "heading": "Business Days",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "of receipt of the Client's request.\n3.2.2 Resolution Time: - Priority 1 (Critical): The Service Provider shall\nuse commercially reasonable efforts to resolve the issue within four (4) hours\nof acknowledgment. - Priority 2 (High): The Service Provider shall use com-\nmercially reasonable efforts to resolve the issue within one ("
+    },
+    {
+      "clause_id": "clause_010",
+      "number": "1",
+      "heading": "Business Day",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "of acknowledgment. - Priority 3 (Medium): The Service Provider shall use\ncommercially reasonable efforts to resolve the issue within three ("
+    },
+    {
+      "clause_id": "clause_011",
+      "number": "3",
+      "heading": "Business",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 4,
+      "issues": [
+        "No significant issues. The clause is clear and does not pose any substantial legal or financial risks."
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "No significant issues. The clause is clear and does not pose any substantial legal or financial risks.",
+      "original_text": "Days of acknowledgment. - Priority 4 (Low): The Service Provider shall use\ncommercially reasonable efforts to resolve the issue within five ("
+    },
+    {
+      "clause_id": "clause_012",
+      "number": "5",
+      "heading": "Business",
+      "clause_type": "confidentiality",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "Days of acknowledgment.\n3.2.3 Availability: The Service Provider shall ensure that the Services are\navailable to the Client during the Client's standard business hours, which shall\nbe [￿] to [￿] (local time) on [￿] to [￿], excluding public holidays. The Service\nProvider shall use commercially reasonable efforts to ensure that any unplanned\ndowntime does not exceed [￿] hours per calendar month.\n3.2.4 Reporting: The Service Provider shall provide the Client with a monthly\nreport detailing the perf"
+    },
+    {
+      "clause_id": "clause_013",
+      "number": "4",
+      "heading": "TERM",
+      "clause_type": "term_termination",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "4.1 Initial Term\nThis Agreement shall commence on the Effective Date and\nshall continue in full force and effect for an initial term of [￿] ([￿]) months (the\n\"Initial Term\"), unless earlier terminated in accordance with the terms of this\nAgreement.\n4.2 Renewal\nThis Agreement shall automatically renew for successive periods\nof [￿] ([￿]) months (each, a \"Renewal Term\"), unless either Party provides\nwritten notice of its intent not to renew this Agreement at least [￿] ([￿]) days\nprior to the expira"
+    },
+    {
+      "clause_id": "clause_014",
+      "number": "5",
+      "heading": "COMPENSATION AND PAYMENT",
+      "clause_type": "payment",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "5.1 Fees\n5.1.1 The Client shall pay the Service Provider the following Fees\nfor the Services provided under this Agreement: -"
+    },
+    {
+      "clause_id": "clause_015",
+      "number": "(a)",
+      "heading": "A fixed monthly fee of [￿]",
+      "clause_type": "payment",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "([￿]) (the \"Monthly Fee\"), payable in advance on the first day of each calendar\nmonth during the Term. - (b) [￿] per hour for any additional services requested\nby the Client that are outside the Scope of Services (the \"Additional Services\nFee\"), payable within [￿] ([￿]) days of receipt of an invoice therefor.\n5.1.2 The Fees set forth in this Section 5.1 are exclusive of any applicable Taxes,\nwhich shall be invoiced separately in accordance with Section 5.5.\n5.1.3 The Fees may be adjusted annuall"
+    },
+    {
+      "clause_id": "clause_016",
+      "number": "6",
+      "heading": "DELIVERABLES AND ACCEPTANCE",
+      "clause_type": "payment",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "6.1 Deliverables\nThe Service Provider shall provide the following Deliver-\nables to the Client in connection with the performance of the Services: - (a)\nmonthly reports detailing the performance of the Services against the Service\nLevels (the \"Monthly Reports\"); - (b) incident reports for any Priority 1\n\nor Priority 2 issues, including a description of the issue, the steps taken to\nresolve it, and the root cause analysis (the \"Incident Reports\"); - (c) any\nsoftware, documentation, or other mater"
+    },
+    {
+      "clause_id": "clause_017",
+      "number": "7",
+      "heading": "OBLIGATIONS OF SERVICE PROVIDER",
+      "clause_type": "term_termination",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "7.1 Performance Standards\nThe Service Provider shall perform the Ser-\nvices: - (a) in a professional and workmanlike manner; - (b) in accordance with\nthe Scope of Services and the Service Levels; - (c) in compliance with all appli-\ncable laws, regulations, and industry standards; and - (d) using personnel with\nthe necessary skills, qualifications, and experience to perform the Services.\n7.2 Resources\nThe Service Provider shall provide all resources, including\npersonnel, equipment, materials, and"
+    },
+    {
+      "clause_id": "clause_018",
+      "number": "8",
+      "heading": "OBLIGATIONS OF CLIENT",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "8.1 Cooperation\nThe Client shall cooperate with the Service Provider in the\nperformance of the Services and shall provide the Service Provider with such\ninformation, access, and assistance as may be reasonably required to enable the\nService Provider to perform the Services in accordance with this Agreement.\n8.2 Information and Access\nThe Client shall provide the Service Provider\nwith: - (a) access to the Client's IT systems, facilities, and personnel as may be\nreasonably required for the perform"
+    },
+    {
+      "clause_id": "clause_019",
+      "number": "9",
+      "heading": "REPRESENTATIONS AND WARRANTIES",
+      "clause_type": "warranties",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "Each Party represents and warrants to the other Party that, as of the Effective\nDate and throughout the Term:\n9.1 Authority: It has the full power and authority to enter into this Agreement\nand to perform its obligations hereunder.\n9.2 Enforceability: This Agreement constitutes a legal, valid, and binding\nobligation of such Party, enforceable against such Party in accordance with its\nterms.\n9.3 No Conflict: The execution, delivery, and performance of this Agreement\ndo not and will not conflict w"
+    },
+    {
+      "clause_id": "clause_020",
+      "number": "(a)",
+      "heading": "The Service Provider has",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "the necessary expertise, experience, and resources to perform the Services in\naccordance with this Agreement.\n-"
+    },
+    {
+      "clause_id": "clause_021",
+      "number": "(b)",
+      "heading": "The Services will be performed in a",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 10,
+      "issues": [
+        "No significant issues. The clause is clear and standard, specifying the expected quality of service without raising any substantive legal concerns."
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "No significant issues. The clause is clear and standard, specifying the expected quality of service without raising any substantive legal concerns.",
+      "original_text": "professional and workmanlike manner and in accordance with the Scope of Ser-\nvices and the Service Levels. -"
+    },
+    {
+      "clause_id": "clause_023",
+      "number": "(d)",
+      "heading": "The Deliverables will be free",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "from material defects and will conform to the Acceptance Criteria. -"
+    },
+    {
+      "clause_id": "clause_024",
+      "number": "(e)",
+      "heading": "The",
+      "clause_type": "warranties",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "Service Provider has all necessary rights, licenses, and permissions to use any\nthird-party software, tools, or materials incorporated into the Services or the\nDeliverables.\n9.6 Client-Specific Warranties: -"
+    },
+    {
+      "clause_id": "clause_025",
+      "number": "(a)",
+      "heading": "The Client has provided the Service",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 10,
+      "issues": [
+        "No significant issues, but the clause is incomplete and lacks important details such as the nature of the information provided, the Service Provider's obligations regarding the information, and any potential liabilities if the information is incorrect or incomplete."
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "No significant issues, but the clause is incomplete and lacks important details such as the nature of the information provided, the Service Provider's obligations regarding the information, and any potential liabilities if the information is incorrect or incomplete.",
+      "original_text": "Provider with all information necessary for the Service Provider to perform the\nServices. -"
+    },
+    {
+      "clause_id": "clause_026",
+      "number": "(b)",
+      "heading": "The Client has all necessary rights, licenses, and permissions to",
+      "clause_type": "general",
+      "risk_level": "LOW",
+      "page_num": 10,
+      "issues": [
+        "No significant issues. The clause is standard and provides necessary assurances that the Client has the right to grant access, which is typical in service agreements."
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "No significant issues. The clause is standard and provides necessary assurances that the Client has the right to grant access, which is typical in service agreements.",
+      "original_text": "provide the Service Provider with access to the Client's IT systems and facilities\nfor the purposes of performing the Services.\n9.7 Disclaimer:"
+    },
+    {
+      "clause_id": "clause_027",
+      "number": "",
+      "heading": "EXCEPT AS EXPRESSLY SET FORTH IN THIS SEC-",
+      "clause_type": "warranties",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "TION 9, NEITHER PARTY MAKES ANY OTHER REPRESENTATIONS OR"
+    },
+    {
+      "clause_id": "clause_035",
+      "number": "0",
+      "heading": "CONFIDENTIALITY",
+      "clause_type": "confidentiality",
+      "risk_level": "LOW",
+      "page_num": 0,
+      "issues": [
+        "Review failed: "
+      ],
+      "evidence_quotes": [],
+      "redlines": [],
+      "new_clauses": [],
+      "redline_suggestion": "",
+      "reasoning": "",
+      "original_text": "10.1 Definition of Confidential Information\n\"Confidential Informa-\ntion\" means any information, whether oral, written, electronic, or in any other\nform, that is disclosed by one Party (the \"Disclosing Party\") to the other\nParty (the \"Receiving Party\") and that: - (a) is marked or identified as con-\nfidential at the time of disclosure; - (b) is described in writing as confidential\nwithin [￿] ([￿]) days after disclosure;\n==============================================================\n￿NEGOTIATION I"
+    }
+  ]
+}

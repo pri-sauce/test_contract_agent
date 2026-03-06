@@ -124,5 +124,23 @@
     "medium_risk_count": 11,
     "low_risk_count": 1,
     "json_path": "C:\\Users\\KIIT01\\Documents\\test_contract_agent\\data\\reviews\\contract_2026-03-05.json"
+  },
+  "contract_2026-03-06": {
+    "contract_id": "contract_2026-03-06",
+    "filename": "contract.pdf",
+    "reviewed_at": "2026-03-06T20:19:34.284987",
+    "overall_risk": "LOW",
+    "recommendation": "Negotiate before signing",
+    "contract_type": "SOW",
+    "parties": [
+      "Party 1 full name",
+      "Party 2 full name"
+    ],
+    "governing_law": null,
+    "total_clauses": 27,
+    "high_risk_count": 0,
+    "medium_risk_count": 0,
+    "low_risk_count": 27,
+    "json_path": "C:\\Users\\KIIT01\\Documents\\test_contract_agent\\data\\reviews\\contract_2026-03-06.json"
   }
 }
