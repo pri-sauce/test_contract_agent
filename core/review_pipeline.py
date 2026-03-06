@@ -1232,7 +1232,7 @@ class ReviewPipeline:
                 )
                 for replace_text, with_text in pairs:
                     r_ = re.sub(r'(?i)^replace\s*:\s*', '', replace_text.strip()).strip().strip('"').strip("'")
-                    w_ = re.sub(r'(?i)^with\s*:\s*',   with_text.strip()).strip().strip('"').strip("'")
+                    w_ = re.sub(r'(?i)^with\s*:\s*', '', with_text.strip()).strip().strip('"').strip("'")
                     JUNK = {"none", "-", "**", "no changes needed", ""}
                     if r_.lower() in JUNK or w_.lower() in JUNK or r_ == w_:
                         continue
