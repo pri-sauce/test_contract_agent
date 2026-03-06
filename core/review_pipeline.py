@@ -290,6 +290,13 @@ class ReviewPipeline:
         # They cannot be HIGH or MEDIUM — max risk is LOW.
         is_recital = clause.metadata.get("is_recital", False)
 
+        # ── Borello factor: independent contractor test sub-clauses (a)-(j).
+        # These are classification test factors, not operative obligations.
+        # Flag them like recitals — max LOW, no IP/payment/privacy issues.
+        is_borello = clause.metadata.get("is_borello_factor", False)
+        if is_borello:
+            is_recital = True   # reuse recital cap logic — same behaviour
+
         # ── Placeholder density: template with unfilled blanks.
         # Don't hunt for evidence quotes — they don't exist yet.
         placeholder_pct = clause.metadata.get("placeholder_pct", 0.0)

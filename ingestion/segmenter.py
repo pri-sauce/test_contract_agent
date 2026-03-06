@@ -78,7 +78,18 @@ CLAUSE_TYPE_KEYWORDS = {
     "term_termination": ["term of", "termination", "duration", "expire", "expiration",
                           "cancel", "cancellation", "auto-renew", "automatic renewal",
                           "notice of termination", "term and termination"],
-    "payment": ["payment", "fees", "compensation", "invoice", "billing", "price", "cost"],
+    # payment: single words ("fees", "cost") fire on almost every clause body.
+    # Body keywords must be multi-word phrases. Single words only help via heading (3x weight).
+    "payment": [
+        "payment schedule", "payment terms", "payment milestones",
+        "invoice payment", "late payment", "overdue payment",
+        "compensation and payment", "fees and expenses",
+        "billing cycle", "fee schedule",
+        # Single-word heading triggers (heading is already 3x weighted — these are safe here)
+        "payment", "fees", "compensation", "invoice", "billing",
+    ],
+    # Store single-word "payment" triggers separately for heading-only scoring
+    "_payment_heading_only": ["cost", "price"],
     "confidentiality": ["confidential", "nda", "non-disclosure", "proprietary", "trade secret"],
     "intellectual_property": ["intellectual property", "copyright", "patent", "trademark",
                                 "ownership", "work for hire", "ip rights"],
@@ -89,6 +100,12 @@ CLAUSE_TYPE_KEYWORDS = {
     "warranties": ["warrant", "warranty", "representation", "represent", "guarantee"],
     "dispute_resolution": ["dispute", "arbitration", "mediation", "litigation",
                              "jurisdiction", "governing law"],
+    "insurance": [
+        "insurance", "insured", "insurer", "policy limit", "coverage",
+        "commercial general liability", "workers compensation",
+        "professional liability", "errors and omissions", "umbrella",
+        "additional insured", "certificate of insurance",
+    ],
     "force_majeure": ["force majeure", "act of god", "beyond control"],
     "assignment": ["assign", "transfer", "novation", "subcontract"],
     "non_compete": ["non-compete", "noncompete", "competition", "competing",
@@ -230,6 +247,11 @@ class ClauseSegmenter:
                 if len(first_line) < 100:
                     heading = first_line
 
+            # Strip PDF column-artefact prefixes from headings (S., N., M., Y., D., etc.)
+            # These appear when PDF columns are read left-to-right and a single letter
+            # from the previous column bleeds into the heading of the next.
+            heading = self._strip_pdf_prefix(heading)
+
             clause = Clause(
                 clause_id=f"clause_{idx + 1:03d}",
                 number=number,
@@ -347,6 +369,40 @@ class ClauseSegmenter:
         "amendment": "amendment",
         "amendments": "amendment",
         "definitions": "definitions",
+        "insurance": "insurance",
+        "insurance requirements": "insurance",
+        "types of insurance": "insurance",
+        "insurance provisions": "insurance",
+        "indemnification for damages, taxes and contributions": "indemnification",
+        "indemnification for damages": "indemnification",
+        "work product": "intellectual_property",
+        "complete agreement": "entire_agreement",
+        "subcontracting": "assignment",
+        "modification of agreement": "amendment",
+        "inspection of work": "general",
+        "safety": "general",
+        "harassment": "general",
+        "dispute": "dispute_resolution",
+        "audit review procedures": "dispute_resolution",
+        "audit": "general",
+        "notification": "notices",
+        "notifications": "notices",
+        "duties": "general",
+        "progress reports": "general",
+    }
+
+    # Borello test factor keywords — California independent contractor test sub-clauses.
+    # These (a)-(j) lettered sub-clauses should be tagged as independent_contractor,
+    # not reviewed for IP/data-privacy/payment issues.
+    BORELLO_KEYWORDS = {
+        "usually done by a specialist", "skill required",
+        "tools and instrumentalities", "location of the work",
+        "duration of the services", "method of payment",
+        "whether the work is part of the regular business",
+        "whether the parties believe they are creating",
+        "conducts public business",
+        "extent of control which, by agreement",
+        "distinct occupation or business",
     }
 
     def _pre_classify(self, clauses: list[Clause]) -> list[Clause]:
@@ -355,15 +411,38 @@ class ClauseSegmenter:
 
         Order of precedence:
         1. Exact heading match against HEADING_OVERRIDES (most reliable)
-        2. Heading keyword scoring x3 weight vs body text
-        3. Body text keyword scoring alone
+        2. Borello/independent-contractor sub-factor detection
+        3. Heading keyword scoring x3 weight vs body text
+        4. Body text keyword scoring alone
         """
         for clause in clauses:
-            clause.clause_type = self._detect_type(
-                body_text=clause.text,
-                heading=clause.heading,
-            )
+            # Borello test: (a)-(j) sub-factors for independent contractor determination
+            if self._is_borello_factor(clause):
+                clause.clause_type = "independent_contractor"
+                clause.metadata["is_borello_factor"] = True
+            else:
+                clause.clause_type = self._detect_type(
+                    body_text=clause.text,
+                    heading=clause.heading,
+                )
         return clauses
+
+    def _is_borello_factor(self, clause) -> bool:
+        """
+        Detect Borello test sub-clauses (California independent contractor test).
+        These are lettered (a)-(j) sub-clauses listing employment classification factors.
+        They should NOT be reviewed for IP/payment/privacy — they're test factors, not obligations.
+        """
+        number  = (clause.number  or "").strip()
+        heading = (clause.heading or "").lower().strip()
+        text    = (clause.text    or "").lower().strip()
+
+        # Must be a single-letter sub-clause like (a), (b), ... (j)
+        if not re.match(r"^[(][a-j][)]$", number):
+            return False
+
+        combined = heading + " " + text
+        return any(kw in combined for kw in self.BORELLO_KEYWORDS)
 
     def _detect_type(self, body_text: str, heading: str = "") -> str:
         """
@@ -381,9 +460,18 @@ class ClauseSegmenter:
         heading_text = heading.lower()
         body_text_lower = body_text.lower()
 
+        # Heading-only keywords (too broad for body matching)
+        heading_only = set(CLAUSE_TYPE_KEYWORDS.get("_payment_heading_only", []))
+
         for clause_type, keywords in CLAUSE_TYPE_KEYWORDS.items():
+            if clause_type.startswith("_"):   # skip meta-entries
+                continue
             heading_score = sum(3 for kw in keywords if kw in heading_text)
-            body_score = sum(1 for kw in keywords if kw in body_text_lower)
+            # Body score: skip heading-only keywords to prevent false positives
+            body_score = sum(
+                1 for kw in keywords
+                if kw not in heading_only and kw in body_text_lower
+            )
             total = heading_score + body_score
             if total > 0:
                 scores[clause_type] = total
@@ -391,7 +479,16 @@ class ClauseSegmenter:
         if not scores:
             return "general"
 
-        return max(scores, key=scores.get)
+        # Tiebreak: prefer more specific types over "general" and "payment"
+        best = max(scores, key=scores.get)
+        best_score = scores[best]
+        # If payment and another type tie, prefer the other type
+        if best == "payment" and len(scores) > 1:
+            non_payment = {k: v for k, v in scores.items() if k != "payment"}
+            runner_up = max(non_payment, key=non_payment.get)
+            if non_payment[runner_up] >= best_score * 0.6:
+                return runner_up
+        return best
 
     def _is_recital(self, clause) -> bool:
         """
@@ -448,6 +545,33 @@ class ClauseSegmenter:
     # ------------------------------------------------------------------
     # Utilities
     # ------------------------------------------------------------------
+
+    def _strip_pdf_prefix(self, heading: str) -> str:
+        """
+        Remove single-letter PDF column artefact prefixes.
+        e.g. "S. General Service Admin" -> "General Service Admin"
+             "N. CONSULTANT shall"      -> "CONSULTANT shall"
+             "M. M. Indemnification"    -> "Indemnification"
+        Only strips if: single letter + period/space + rest of heading is 3+ chars.
+        Does NOT strip genuine lettered sub-clauses like "(a)" or "A. Definitions".
+        """
+        if not heading:
+            return heading
+        # Pattern: one uppercase letter, period, space, then the real heading
+        m = re.match(r"^([A-Z])\.\s+(.{3,})$", heading)
+        if m:
+            letter, rest = m.group(1), m.group(2)
+            # Don't strip if this looks like a real lettered section (A-Z followed by Title Case)
+            # Real sections: "A. Insurance Requirements", "B. Other Insurance Provisions"
+            # Artefacts: "S. General...", "N. CONSULTANT...", "M. This Agreement..."
+            # Heuristic: if the rest starts with an uppercase word longer than 3 chars, it's likely real.
+            # We strip it regardless and let HEADING_OVERRIDES handle mis-strips.
+            return rest.strip()
+        # Double-letter artefact: "M. M. Indemnification" -> "Indemnification"
+        m2 = re.match(r"^([A-Z])\.\s+[A-Z]\.\s+(.{3,})$", heading)
+        if m2:
+            return m2.group(2).strip()
+        return heading
 
     def _estimate_page(self, line_idx: int, total_lines: int) -> int:
         """Rough page estimate based on line position."""
