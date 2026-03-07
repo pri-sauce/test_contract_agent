@@ -1113,7 +1113,19 @@ def _run_review(file: Path, output_dir=None, fmt="markdown", store_in_rag=True, 
         json_path = out_dir / f"{base_name}.json"
         exporter.export_json(report, json_path)
         saved.append(json_path)
-    
+    # Generate HTML dashboard (always, alongside markdown)
+    try:
+        from utils.md_to_html import parse_report, render_html
+        html_path = out_dir / f"{base_name}.html"
+        with console.status("[bold]Generating HTML dashboard...[/bold]"):
+            _html_data = parse_report(md_path)
+            html_path.write_text(render_html(_html_data), encoding="utf-8")
+        saved.append(html_path)
+        console.print(f"[green]✓[/green] HTML dashboard generated")
+    except Exception as e:
+        console.print(f"[yellow]⚠ HTML generation failed: {e}[/yellow]")
+        logger.error(f"HTML generation error: {e}")
+
     # Generate PDF if requested
     if fmt in ("pdf", "all"):
         try:
@@ -1132,6 +1144,8 @@ def _run_review(file: Path, output_dir=None, fmt="markdown", store_in_rag=True, 
             console.print(f"[yellow]⚠ PDF generation failed: {e}[/yellow]")
             logger.error(f"PDF generation error: {e}")
 
+    
+
     # Always write JSON to REVIEWS_DIR for list/show commands
     index_json = REVIEWS_DIR / f"{base_name}.json"
     REVIEWS_DIR.mkdir(parents=True, exist_ok=True)
@@ -1146,9 +1160,19 @@ def _run_review(file: Path, output_dir=None, fmt="markdown", store_in_rag=True, 
     console.print()
     _print_report_summary(report, verbose=verbose)
 
+    # console.print(f"\n[bold]Saved:[/bold]")
+    # for f in saved:
+    #     console.print(f"  [cyan]{f}[/cyan]")
+
     console.print(f"\n[bold]Saved:[/bold]")
     for f in saved:
         console.print(f"  [cyan]{f}[/cyan]")
+
+    # Auto-launch HTML dashboard in browser
+    if html_path and html_path.exists():
+        import webbrowser
+        webbrowser.open(html_path.resolve().as_uri())
+        console.print(f"\n[dim]✓ Dashboard opened in browser[/dim]")   
 
     if store_in_rag:
         console.print(f"\n[dim]✓ {report.total_clauses} clauses stored in RAG DB for future reviews[/dim]")
