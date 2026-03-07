@@ -22,7 +22,7 @@ def start_ollama():
         pass  # not running, start it
 
     env = os.environ.copy()
-    env["OLLAMA_NUM_PARALLEL"]      = "2"
+    env["OLLAMA_NUM_PARALLEL"]      = "1"
     env["OLLAMA_MAX_LOADED_MODELS"] = "1"
 
     subprocess.Popen(
@@ -37,7 +37,7 @@ def start_ollama():
     for _ in range(20):
         time.sleep(1)
         try:
-            httpx.get("http://localhost:11434", timeout=2.0)
+            httpx.get("http://localhost:11434", timeout=6.0)
             return
         except Exception:
             pass
@@ -48,8 +48,8 @@ class Config:
     OLLAMA_BASE_URL: str = "http://localhost:11434"
 
     # --- Models ---
-    PRIMARY_MODEL:   str = "qwen2.5:7b-instruct-q4_K_M"
-    FAST_MODEL:      str = "qwen3.5:0.8b"
+    PRIMARY_MODEL:   str = "llama3.2:3b"
+    FAST_MODEL:      str = "llama3.2:3b"
     EMBEDDING_MODEL: str = "nomic-embed-text"
 
     # --- Parallelism ---
