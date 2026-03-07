@@ -1034,8 +1034,8 @@ class ReviewPipeline:
                 ),
                 system=SYSTEM_CONTRACT_REVIEWER,
                 temperature=0.1,
-                max_tokens=2048,
-                num_ctx=1024,
+                max_tokens=600,
+                num_ctx=2048,
             )
 
             review = self._parse_review_response(response, clause)

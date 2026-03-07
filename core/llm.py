@@ -238,7 +238,7 @@ def _get_client() -> httpx.AsyncClient:
     global _async_client
     if _async_client is None or _async_client.is_closed:
         _async_client = httpx.AsyncClient(
-            timeout=httpx.Timeout(300.0, connect=10.0),
+            timeout=httpx.Timeout(600.0, connect=10.0),
             limits=httpx.Limits(
                 max_connections=config.PARALLEL_WORKERS + 4,
                 max_keepalive_connections=config.PARALLEL_WORKERS + 4,
@@ -282,6 +282,9 @@ class AsyncLLMClient:
                 "temperature": temperature,
                 "num_predict": max_tokens,
                 "num_ctx":     num_ctx,
+                "num_batch":   1024,
+                "num_gpu":     99,
+                "keep_alive":  -1,
             },
         }
 
@@ -364,6 +367,9 @@ class LLMClient:
                     "temperature": temperature,
                     "num_predict": max_tokens,
                     "num_ctx":     num_ctx,
+                    "num_batch":   1024,
+                    "num_gpu":     99,
+                    "keep_alive":  -1,
                 },
             )
             return response.message.content
@@ -394,7 +400,7 @@ class LLMClient:
         for chunk in self.client.chat(
             model=use_model, messages=messages,
             stream=True,
-            options={"temperature": temperature, "num_ctx": 2048},
+            options={"temperature": temperature, "num_ctx": 2048, "num_batch": 1024, "num_gpu": 99, "keep_alive": -1},
         ):
             if chunk.message.content:
                 yield chunk.message.content
